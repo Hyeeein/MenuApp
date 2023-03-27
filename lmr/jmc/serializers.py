@@ -11,12 +11,18 @@ class MenuSerializer(ModelSerializer):
     class Meta:
         model = Menu
         fields = '__all__'
-
+        
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+        read_only_fields = ('id',)
+'''
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id','email','gender','age')
-
+'''
 class ReviewSerializer(ModelSerializer):
     menu = MenuSerializer()
     user = UserSerializer()
@@ -28,3 +34,4 @@ class NutritionSerializer(ModelSerializer):
     class Meta:
         model = NutritionInformation
         fields = '__all__'
+

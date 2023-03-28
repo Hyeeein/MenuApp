@@ -28,7 +28,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = db_setting.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['127.0.0.1','52.78.72.175','ec2-52-78-72-175.ap-northeast-2.compute.amazonaws.com']

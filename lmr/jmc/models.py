@@ -33,9 +33,11 @@ def MenuImagePath(instance, filename):
 class Menu(models.Model):
     id = models.IntegerField(primary_key=True)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
-    category_name = models.CharField(max_length=20, blank=True, null=True)
+    category = models.CharField(max_length=20, blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
-    price = models.IntegerField(blank=True, null=True)    
+    price = models.IntegerField(blank=True, null=True)
+    emotion = models.CharField(max_length=20, blank=True, null=True)
+    weather = models.CharField(max_length=20, blank=True, null=True)
     image = models.ImageField(upload_to=MenuImagePath ,blank=True, null=True)
 
     class Meta:
@@ -65,17 +67,17 @@ class MenuRecommendLog(models.Model):
 
 class NutritionInformation(models.Model):
     id = models.IntegerField(primary_key=True)
-    ingredients = models.CharField(max_length=20, blank=True, null=True)
-    weight = models.IntegerField(blank=True, null=True)
-    calories = models.IntegerField(blank=True, null=True)
-    carbohydrates = models.IntegerField(blank=True, null=True)
-    sugar = models.IntegerField(blank=True, null=True)
-    protein = models.IntegerField(blank=True, null=True)
-    fat = models.IntegerField(blank=True, null=True)
-    trans_fat = models.IntegerField(blank=True, null=True)
-    saturation_fat = models.IntegerField(blank=True, null=True)
-    cholesterol = models.IntegerField(blank=True, null=True)
-    sodium = models.IntegerField(blank=True, null=True)
+    name = models.CharField(max_length=20, blank=True, null=True)
+    gram = models.FloatField(blank=True, null=True)
+    calorie = models.FloatField(blank=True, null=True)
+    carbohydrate = models.FloatField(blank=True, null=True)
+    protein = models.FloatField(blank=True, null=True)
+    fat = models.FloatField(blank=True, null=True)
+    saturatedfat = models.FloatField(blank=True, null=True)
+    unsaturatedfat = models.FloatField(blank=True, null=True)
+    cholesterol  = models.IntegerField(blank=True, null=True)
+    sodium  = models.IntegerField(blank=True, null=True)
+    potash = models.IntegerField(blank=True, null=True)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:
@@ -85,7 +87,8 @@ class NutritionInformation(models.Model):
 
 class PreferredMenu(models.Model):
     preference = models.IntegerField()
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('User', models.CASCADE)
+    menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:
         managed = True
@@ -105,14 +108,18 @@ class Restaurant(models.Model):
         managed = True
         db_table = 'restaurant'
 
+def ReviewImagePath(instance, filename):
+    restaurant = instance.restaurant
+    return "review/%s/%s" % (restaurant,filename)
 
 class Review(models.Model):
     id = models.IntegerField(primary_key=True)
     rating = models.FloatField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('User', models.CASCADE)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
-    image = models.ImageField(upload_to='review/',blank=True, null=True)
+    restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
+    image = models.ImageField(upload_to=ReviewImagePath,blank=True, null=True)
 
     class Meta:
         managed = True
@@ -121,8 +128,8 @@ class Review(models.Model):
 
 class User(models.Model):
     id = models.IntegerField(primary_key=True)
-    password = models.CharField(max_length=45)
     email = models.CharField(unique=True, max_length=30)
+    password = models.CharField(max_length=45)
     gender = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
 
@@ -132,7 +139,7 @@ class User(models.Model):
 
 
 class UserAllergy(models.Model):
-    user = models.ForeignKey(User, models.DO_NOTHING)
+    user = models.ForeignKey(User, models.CASCADE)
     allergy = models.ForeignKey(Allergy, models.DO_NOTHING)
 
     class Meta:

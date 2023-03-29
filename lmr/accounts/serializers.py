@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import User
+from jmc.models import User
 from django.contrib.auth.models import update_last_login
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -10,14 +10,12 @@ from rest_framework.authtoken.models import Token
 User = get_user_model()
 
 class UserCreateSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
+    #username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True)
     repassword = serializers.CharField(required=True)
-    gender = serializers.CharField(required=True)
-    age = serializers.IntegerField(required=True)
-    allergy = serializers.CharField(required=True)
-    preference = serializers.CharField(required=True)
+    gender = serializers.IntegerField()
+    age = serializers.IntegerField()
 
     def validate(self, data):
         password = data.get('password')
@@ -28,12 +26,10 @@ class UserCreateSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = User.objects.create(
-            username=validated_data['username'],
+            #username=validated_data['username'],
             email=validated_data['email'],
             gender=validated_data['gender'],
             age=validated_data['age'],
-            allergy=validated_data['allergy'],
-            preference = validated_data['preference'],
         )
         user.set_password(validated_data['password']) 
         user.save()

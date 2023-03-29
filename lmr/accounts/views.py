@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from .serializers import UserCreateSerializer
 from .serializers import UserLoginSerializer
-from .models import User
+from jmc.models import User
 from rest_framework.permissions import AllowAny
 
 @api_view(['POST'])

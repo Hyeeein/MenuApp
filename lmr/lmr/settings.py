@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'accounts.User' # abstractbaseuser 패키지 쓰기위한 명령어
+AUTH_USER_MODEL = 'jmc.User' # abstractbaseuser 패키지 쓰기위한 명령어
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

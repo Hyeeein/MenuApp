@@ -1,3 +1,4 @@
+'''
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils import timezone
@@ -36,10 +37,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name=_('email id'),max_length=64,unique=True,help_text='EMAIL ID.')
     username = models.CharField(verbose_name=_('username'), max_length=30, unique=True, null=True)
-    gender = models.CharField(max_length=10, blank=True, null=True)
+    gender = models.IntegerField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
-    allergy = models.CharField(blank=True, null=True, max_length=100)
-    preference = models.CharField(blank=True, null=True, max_length=100)
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -72,3 +71,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.email
+'''

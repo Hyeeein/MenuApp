@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'jmc',
     'rest_framework',
     'rest_framework.authtoken',
-    'accounts'
+    'accounts',
     'recommendation', # 메뉴 추천시스템 추가
 ]
 

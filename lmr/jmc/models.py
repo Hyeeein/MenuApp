@@ -60,7 +60,7 @@ class Nutrition(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'nutrition_information'
+        db_table = 'nutrition'
 
 
 class PreferredMenu(models.Model):

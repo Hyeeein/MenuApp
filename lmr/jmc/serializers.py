@@ -33,5 +33,5 @@ class ReviewSerializer(ModelSerializer):
 
 class NutritionSerializer(ModelSerializer):
     class Meta:
-        model = NutritionInformation
+        model = Nutrition
         fields = '__all__'

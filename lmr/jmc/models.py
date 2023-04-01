@@ -11,23 +11,6 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-class Allergy(models.Model):
-    id = models.IntegerField(primary_key=True)
-    allergy_name = models.CharField(db_column='allergy_ name', max_length=20, blank=True, null=True)  # Field renamed to remove unsuitable characters.
-
-    class Meta:
-        managed = True
-        db_table = 'allergy'
-
-
-class Category(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=20, blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'category'
-
 
 def MenuImagePath(instance, filename):
     restaurant = instance.restaurant
@@ -48,15 +31,6 @@ class Menu(models.Model):
         db_table = 'menu' 
 
 
-class MenuAllergy(models.Model):
-    allergy = models.ForeignKey(Allergy, models.DO_NOTHING)
-    menu = models.ForeignKey(Menu, models.DO_NOTHING)
-
-    class Meta:
-        managed = True
-        db_table = 'menu_allergy'
-
-
 class MenuRecommendLog(models.Model):
     id = models.IntegerField(primary_key=True)
     datetime = models.DateTimeField(blank=True, null=True)
@@ -68,9 +42,10 @@ class MenuRecommendLog(models.Model):
         db_table = 'menu_recommend_log'
 
 
-class NutritionInformation(models.Model):
+class Nutrition(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=20, blank=True, null=True)
+    menu = models.OneToOneField(Menu, models.DO_NOTHING, blank=True, null=True)
     gram = models.FloatField(blank=True, null=True)
     calorie = models.FloatField(blank=True, null=True)
     carbohydrate = models.FloatField(blank=True, null=True)
@@ -81,7 +56,7 @@ class NutritionInformation(models.Model):
     cholesterol  = models.IntegerField(blank=True, null=True)
     sodium  = models.IntegerField(blank=True, null=True)
     potash = models.IntegerField(blank=True, null=True)
-    menu = models.ForeignKey(Menu, models.DO_NOTHING)
+    ingredient = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -119,6 +94,7 @@ class Review(models.Model):
     id = models.IntegerField(primary_key=True)
     rating = models.FloatField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
+    datetime = models.DateTimeField(blank=True, null=True, default=timezone.now)
     user = models.ForeignKey('User', models.CASCADE)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
     restaurant = models.ForeignKey('Restaurant', models.DO_NOTHING)
@@ -127,19 +103,6 @@ class Review(models.Model):
     class Meta:
         managed = True
         db_table = 'review'
-
-'''
-class User(models.Model):
-    id = models.IntegerField(primary_key=True)
-    email = models.CharField(unique=True, max_length=30)
-    password = models.CharField(max_length=45)
-    gender = models.IntegerField(blank=True, null=True)
-    age = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'user'
-'''
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -173,7 +136,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name=_('email id'),max_length=64,unique=True,help_text='EMAIL ID.')
     username = models.CharField(verbose_name=_('username'), max_length=30, unique=True, null=True)
-    gender = models.IntegerField(blank=True, null=True)
+    nickname = models.CharField(max_length=20, blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
 
     is_staff = models.BooleanField(
@@ -195,6 +159,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
+    NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
 
@@ -211,11 +176,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-
 class UserAllergy(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
-    allergy = models.ForeignKey(Allergy, models.DO_NOTHING)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    egg = models.IntegerField(blank=True, null=True, default=0)
+    milk = models.IntegerField(blank=True, null=True, default=0)
+    wheat = models.IntegerField(blank=True, null=True, default=0)
+    bean = models.IntegerField(blank=True, null=True, default=0)
+    peanut = models.IntegerField(blank=True, null=True, default=0)
+    walnut = models.IntegerField(blank=True, null=True, default=0)
+    almond = models.IntegerField(blank=True, null=True, default=0)
+    fish = models.IntegerField(blank=True, null=True, default=0)
+    shellfish = models.IntegerField(blank=True, null=True, default=0)
+    shrimp = models.IntegerField(blank=True, null=True, default=0)
+    crab = models.IntegerField(blank=True, null=True, default=0)
+    
     class Meta:
         managed = True
         db_table = 'user_allergy'

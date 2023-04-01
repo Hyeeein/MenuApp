@@ -56,7 +56,7 @@ class Nutrition(models.Model):
     cholesterol  = models.IntegerField(blank=True, null=True)
     sodium  = models.IntegerField(blank=True, null=True)
     potash = models.IntegerField(blank=True, null=True)
-    ingredient = models.CharField(max_length=50, blank=True, null=True)
+    ingredient = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         managed = True

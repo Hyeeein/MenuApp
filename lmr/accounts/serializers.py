@@ -14,7 +14,8 @@ class UserCreateSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True)
     repassword = serializers.CharField(required=True)
-    gender = serializers.IntegerField()
+    nickname = serializers.CharField()
+    gender = serializers.CharField()
     age = serializers.IntegerField()
 
     def validate(self, data):

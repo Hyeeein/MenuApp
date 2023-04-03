@@ -139,6 +139,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
+    allergy = models.CharField(blank=True, null=True, max_length=100) # 회원가입 시 알러지 정보 저장하는 컬럼
+    preference = models.CharField(blank=True, null=True, max_length=100) # 회원가입 시 선호 음식 저장하는 컬럼
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -162,6 +164,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
+    ALLERGY_FIELD = 'allergy'
+    PREFERENCE_FIELD = 'preference'
 
     class Meta:
         verbose_name = _('user')

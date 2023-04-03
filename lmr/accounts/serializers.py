@@ -17,6 +17,8 @@ class UserCreateSerializer(serializers.Serializer):
     nickname = serializers.CharField()
     gender = serializers.CharField()
     age = serializers.IntegerField()
+    allergy = serializers.CharField(required=True) # 알러지 기입
+    preference = serializers.CharField(required=True) # 선호 음식 기입
 
     def validate(self, data):
         password = data.get('password')
@@ -31,6 +33,8 @@ class UserCreateSerializer(serializers.Serializer):
             email=validated_data['email'],
             gender=validated_data['gender'],
             age=validated_data['age'],
+            allergy=validated_data['allergy'],
+            preference=validated_data['preference'],
         )
         user.set_password(validated_data['password']) 
         user.save()

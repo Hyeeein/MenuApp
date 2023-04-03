@@ -22,7 +22,7 @@ class MenuSerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','email','gender','age')
+        fields = ('id','email','gender','age','allergy','preference')
 
 class ReviewSerializer(ModelSerializer):
     menu = MenuSerializer()

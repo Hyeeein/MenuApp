@@ -1,10 +1,3 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
@@ -57,6 +50,7 @@ class Nutrition(models.Model):
     sodium  = models.IntegerField(blank=True, null=True)
     potash = models.IntegerField(blank=True, null=True)
     ingredient = models.CharField(max_length=100, blank=True, null=True)
+    allergy = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -139,8 +133,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
-    allergy = models.CharField(blank=True, null=True, max_length=100) # 회원가입 시 알러지 정보 저장하는 컬럼
-    preference = models.CharField(blank=True, null=True, max_length=100) # 회원가입 시 선호 음식 저장하는 컬럼
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -164,8 +156,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
-    ALLERGY_FIELD = 'allergy'
-    PREFERENCE_FIELD = 'preference'
 
     class Meta:
         verbose_name = _('user')
@@ -187,12 +177,10 @@ class UserAllergy(models.Model):
     wheat = models.IntegerField(blank=True, null=True, default=0)
     bean = models.IntegerField(blank=True, null=True, default=0)
     peanut = models.IntegerField(blank=True, null=True, default=0)
-    walnut = models.IntegerField(blank=True, null=True, default=0)
-    almond = models.IntegerField(blank=True, null=True, default=0)
     fish = models.IntegerField(blank=True, null=True, default=0)
+    meat = models.IntegerField(blank=True, null=True, default=0)
     shellfish = models.IntegerField(blank=True, null=True, default=0)
-    shrimp = models.IntegerField(blank=True, null=True, default=0)
-    crab = models.IntegerField(blank=True, null=True, default=0)
+    crustaceans = models.IntegerField(blank=True, null=True, default=0)
     
     class Meta:
         managed = True

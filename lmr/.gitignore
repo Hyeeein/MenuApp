@@ -8,4 +8,4 @@ jmc/migrations/
 
 __pycache__/
 
-!jmc/migrations/__init__.py
+!__init__.py

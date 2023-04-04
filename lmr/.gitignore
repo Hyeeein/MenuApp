@@ -5,3 +5,11 @@ staticfiles/
 media/
 
 jmc/migrations/
+
+__pycache__/
+
+jmc/__pycache__/
+
+lmr/__pycache__/
+
+accounts/__pycache__/

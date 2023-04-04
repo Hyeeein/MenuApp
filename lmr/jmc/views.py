@@ -12,6 +12,7 @@ def getRestaurant(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getMenuByRestaurant(request, restaurant):
     uid = request.user.id
     datas = Menu.objects.filter(restaurant=restaurant)

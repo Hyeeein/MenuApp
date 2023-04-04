@@ -3,3 +3,5 @@ db_setting.py
 staticfiles/
 
 media/
+
+jmc/migrations/

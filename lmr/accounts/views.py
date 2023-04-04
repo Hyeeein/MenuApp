@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from .serializers import *
 from jmc.models import User
-from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 
 

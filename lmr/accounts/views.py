@@ -23,6 +23,24 @@ def createUser(request):
             serializer.save()
             return Response({"message": "ok"}, status=status.HTTP_201_CREATED)
         return Response({"message": "duplicate email"}, status=status.HTTP_409_CONFLICT)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def checkEmail(request):
+    email = request.data['email']
+    if User.objects.filter(email=email).exists():
+        return Response({"message": "duplicate email","available":False})
+    else:
+        return Response({"message": "not duplicate email","available":True})
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def checkNickname(request):
+    nickname = request.data['nickname']
+    if User.objects.filter(nickname=nickname).exists():
+        return Response({"message": "duplicate nickname","available":False})
+    else:
+        return Response({"message": "not duplicate nickname","available":True})
     
 @api_view(['POST'])
 @permission_classes([AllowAny])

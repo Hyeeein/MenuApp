@@ -7,6 +7,7 @@ urlpatterns = [
     path('restaurant/<int:restaurant>/review', views.getReviewByRestaurant, name="getReviewByRestaurant"),
     path('menu/<int:menu>/nutrition', views.getNutritionByMenu, name="getNutritionByMenu"),
     path('allergy', views.UserAllergyView, name="UserAllergyView"),
+    path('review', views.postReview), # 리뷰 등록 url
     path('review/<int:id>', views.getReview), # id에 해당하는 인덱스를 가진 리뷰를 조회 url
     path('review/user', views.getUserReview), # 사용자가 작성한 리뷰 조회 url
     path('review/restaurant', views.getRestaurantReview), # 음식점에 해당하는 리뷰 조회 url

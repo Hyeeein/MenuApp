@@ -66,14 +66,32 @@ class MenuSerializer(ModelSerializer):
 class UserNicknameSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('nickname')
+        fields = ['nickname']
 
-class ReviewSerializer(ModelSerializer):
-    menu = MenuSerializer()
+class MenuNameSerializer(ModelSerializer):
+    
+    class Meta:
+        model = Menu
+        fields = ('id','name')
+
+class RestaurantNameSerializer(ModelSerializer):
+    
+    class Meta:
+        model = Restaurant
+        fields = ('id','name')
+
+class ReviewGetSerializer(ModelSerializer):
+    menu = MenuNameSerializer()
+    restaurant = RestaurantNameSerializer()
     user = UserNicknameSerializer()
     class Meta:
         model = Review
-        fields = ('id','rating','content','user','menu','restaurant','image')
+        fields = ('id','rating','content','datetime','user','menu','restaurant','image')
+
+class ReviewPostSerializer(ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('rating','content','user','menu','restaurant','image')
 
 class NutritionSerializer(ModelSerializer):
     class Meta:
@@ -83,5 +101,25 @@ class NutritionSerializer(ModelSerializer):
 class UserAllergySerializer(ModelSerializer):    
     class Meta:
         model = UserAllergy
+        fields = '__all__'
+
+class MenuPreSerializer(ModelSerializer):
+    preference = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Menu
+        fields = ('id','category','name','image','preference')
+
+    def get_preference(self, obj):
+        user = self.context.get("request").user
+        pre = PreferredMenu.objects.filter(user=user.id, menu=obj.id).first()
+        if pre is None:
+            return -1
+        preference = pre.preference
+        return preference
+
+class PreMenuSerializer(ModelSerializer):
+    class Meta:
+        model = PreferredMenu
         fields = '__all__'
     

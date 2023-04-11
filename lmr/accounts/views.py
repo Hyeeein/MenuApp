@@ -21,7 +21,7 @@ def createUser(request):
 
         if User.objects.filter(email=serializer.validated_data['email']).first() is None:
             serializer.save()
-            return Response({"message": "ok"}, status=status.HTTP_201_CREATED)
+            return Response({"message": "register success"}, status=status.HTTP_201_CREATED)
         return Response({"message": "duplicate email"}, status=status.HTTP_409_CONFLICT)
 
 @api_view(['POST'])
@@ -54,7 +54,7 @@ def loginUser(request):
         token = serializer.data['token']
         
         response = {
-            'success': 'True',
+            'message' : 'login success',
             'token':serializer.data['token'],
         }
         return Response(response, status=status.HTTP_200_OK)

@@ -85,7 +85,7 @@ def ReviewImagePath(instance, filename):
     return "review/%s/%s" % (restaurant,filename)
 
 class Review(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     rating = models.FloatField(blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     datetime = models.DateTimeField(blank=True, null=True, default=timezone.now)

@@ -4,8 +4,11 @@ from rest_framework.decorators import api_view, permission_classes
 from .models import *
 from .serializers import *
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.db.models import Max
+import random
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getRestaurant(request):
     datas = Restaurant.objects.all()
     serializer = RestaurantSerializer(datas, many=True)
@@ -20,12 +23,14 @@ def getMenuByRestaurant(request, restaurant):
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getReviewByRestaurant(request, restaurant):
     reviews = Review.objects.filter(restaurant=restaurant)
-    serializer = ReviewSerializer(reviews, many=True)
+    serializer = ReviewGetSerializer(reviews, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getNutritionByMenu(request, menu):
     datas = Nutrition.objects.filter(menu=menu)
     serializer = NutritionSerializer(datas, many=True)
@@ -68,48 +73,26 @@ def getReview(request, id):
         data = Review.objects.get(id=id)
     except Review.DoesNotExist:
         return Response(status=404)
-    serializer = ReviewSerializer(data)
+    serializer = ReviewGetSerializer(data)
     return Response(serializer.data)
 
 @api_view(['GET']) # 사용자가 작성한 리뷰 조회
 @permission_classes([IsAuthenticated])
 def getUserReview(request):
     tmp = Review.objects.filter(user_id=request.user.id)
-    serializer = ReviewSerializer(tmp, many=True)
+    serializer = ReviewGetSerializer(tmp, many=True)
     return Response(serializer.data)
-
-@api_view(['GET']) # 음식점이 저장되어 있는 리뷰 조회
-@permission_classes([IsAuthenticated])
-def getRestaurantReview(request):
-    tmp = Review.objects.filter(restaurant_id=request.user.id)
-    serializer = ReviewSerializer(tmp, many=True)
-    return Response(serializer.data)
-
 
 @api_view(['POST']) # 리뷰 작성 로직
 @permission_classes([IsAuthenticated])
 def postReview(request):
     if request.method == 'POST':
-        serializer = ReviewSerializer(data=request.data)
+        uid = {"user":request.user.id}
+        datas = dict(request.data, **uid)
+        serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=400)
-    
-@api_view(['PUT']) # 리뷰 수정 로직
-@permission_classes([IsAuthenticated])
-def updateReview(request, id):
-    
-    try:
-        review = Review.objects.get(id=id, user_id=request.user.id) # 사용자의 리뷰가 여러개일수있으니 리뷰 인덱스가 있어야함
-    except Review.DoesNotExist:
-        return Response({"user error"}, status=404)
-
-    if request.method == 'PUT':
-        serializer = ReviewSerializer(review, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
 @api_view(['DELETE']) # 리뷰 삭제 로직
@@ -118,9 +101,35 @@ def deleteReview(request, id):
     try:
         review = Review.objects.get(id=id) # 사용자의 리뷰가 여러개일수있으니 리뷰 인덱스가 있어야함
         if review.user_id != request.user.id:
-            return Response({"user error"}, status=403)
+            return Response({"message":"user error"}, status=403)
     except Review.DoesNotExist:
-        return Response({"review not found"}, status=404)
+        return Response({"message":"review not found"}, status=404)
     
     review.delete()
-    return Response({"delete success"}, status=204)
+    return Response({"message":"delete success"}, status=200)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMenuPreference(request):
+    max_id = Menu.objects.all().aggregate(max_id=Max("id"))['max_id']
+    random.seed(request.user.id)
+    pk = random.randint(1, max_id)
+    menu = Menu.objects.none()
+    c = 0
+    while c < 30:
+        pk = random.randint(1, max_id)
+        menu = menu.union(Menu.objects.filter(id=pk))
+        c+=1
+    datas = menu
+    serializer = MenuPreSerializer(datas, context={'request': request}, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def postMenuPreference(request):
+    obj, created = PreferredMenu.objects.update_or_create(
+    user_id=request.user.id,
+    menu_id=request.data['menu'],
+    defaults={'preference': request.data['preference']},
+    )
+    return Response({"message":"update success"}, status=200)

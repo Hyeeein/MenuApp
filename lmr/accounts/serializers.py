@@ -11,6 +11,7 @@ class UserCreateSerializer(serializers.Serializer):
     nickname = serializers.CharField()
     gender = serializers.CharField()
     age = serializers.IntegerField()
+    Introduction = serializers.CharField()
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -18,6 +19,7 @@ class UserCreateSerializer(serializers.Serializer):
             nickname=validated_data['nickname'],
             gender=validated_data['gender'],
             age=validated_data['age'],
+            Introduction=validated_data['Introduction'],
         )
         user.set_password(validated_data['password']) 
         user.save()

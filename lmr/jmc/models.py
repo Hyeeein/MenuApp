@@ -172,15 +172,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserAllergy(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    egg = models.IntegerField(blank=True, null=True, default=0)
-    milk = models.IntegerField(blank=True, null=True, default=0)
-    wheat = models.IntegerField(blank=True, null=True, default=0)
-    bean = models.IntegerField(blank=True, null=True, default=0)
-    peanut = models.IntegerField(blank=True, null=True, default=0)
-    fish = models.IntegerField(blank=True, null=True, default=0)
-    meat = models.IntegerField(blank=True, null=True, default=0)
-    shellfish = models.IntegerField(blank=True, null=True, default=0)
-    crustaceans = models.IntegerField(blank=True, null=True, default=0)
+    달걀 = models.IntegerField(blank=True, null=True, default=0)
+    우유 = models.IntegerField(blank=True, null=True, default=0)
+    밀 = models.IntegerField(blank=True, null=True, default=0)
+    콩 = models.IntegerField(blank=True, null=True, default=0)
+    땅콩 = models.IntegerField(blank=True, null=True, default=0)
+    생선 = models.IntegerField(blank=True, null=True, default=0)
+    고기 = models.IntegerField(blank=True, null=True, default=0)
+    조개 = models.IntegerField(blank=True, null=True, default=0)
+    갑각류 = models.IntegerField(blank=True, null=True, default=0)
     
     class Meta:
         managed = True

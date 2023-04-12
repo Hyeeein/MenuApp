@@ -23,15 +23,15 @@ class MenuSerializer(ModelSerializer):
 
     def get_checkallergy(self, obj):
         user = self.context.get("request").user
-        egg = UserAllergy.objects.get(user=user.id).egg
-        milk = UserAllergy.objects.get(user=user.id).milk
-        wheat = UserAllergy.objects.get(user=user.id).wheat
-        bean = UserAllergy.objects.get(user=user.id).bean
-        peanut = UserAllergy.objects.get(user=user.id).peanut
-        fish = UserAllergy.objects.get(user=user.id).fish
-        meat = UserAllergy.objects.get(user=user.id).meat
-        shellfish = UserAllergy.objects.get(user=user.id).shellfish
-        crustaceans = UserAllergy.objects.get(user=user.id).crustaceans
+        egg = UserAllergy.objects.get(user=user.id).달걀
+        milk = UserAllergy.objects.get(user=user.id).우유
+        wheat = UserAllergy.objects.get(user=user.id).밀
+        bean = UserAllergy.objects.get(user=user.id).콩
+        peanut = UserAllergy.objects.get(user=user.id).땅콩
+        fish = UserAllergy.objects.get(user=user.id).생선
+        meat = UserAllergy.objects.get(user=user.id).고기
+        shellfish = UserAllergy.objects.get(user=user.id).조개
+        crustaceans = UserAllergy.objects.get(user=user.id).갑각류
 
         if egg==1:
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="달걀").exists():

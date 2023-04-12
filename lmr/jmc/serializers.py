@@ -68,6 +68,8 @@ class UserNicknameSerializer(ModelSerializer):
         model = User
         fields = ['nickname']
 
+
+
 class MenuNameSerializer(ModelSerializer):
     
     class Meta:
@@ -123,3 +125,7 @@ class PreMenuSerializer(ModelSerializer):
         model = PreferredMenu
         fields = '__all__'
     
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'nickname', 'Introduction')

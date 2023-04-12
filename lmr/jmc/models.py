@@ -133,6 +133,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
+    Introduction = models.CharField(max_length=50, blank=True, null=True)
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -156,6 +157,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
+    INTRODUCTION = 'Introduction'
 
     class Meta:
         verbose_name = _('user')

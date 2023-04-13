@@ -10,10 +10,10 @@
 
 파일 경로
  * 디자인 파일 (.xml)
-  - front\app\src\main\res\layout
+   - front\app\src\main\res\layout
  * 이미지 파일 (아이콘 등. 서버 X 다운받은 파일)
-  - front\app\src\main\res\drawable
+   - front\app\src\main\res\drawable
  * 기능 파일 (.java)
-  - front\app\src\main\java\com\example\menuapp
+   - front\app\src\main\java\com\example\menuapp
   
  

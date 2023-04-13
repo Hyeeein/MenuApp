@@ -1,4 +1,10 @@
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.db.models import Max
 
 from jmc.models import *
 
@@ -13,11 +19,15 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # 데이터 불러오기
-menu = pd.read_csv('../../data/menu.csv', encoding='utf-8')
-nutrient_menu = pd.read_csv('../../data/nutrient.csv', encoding='cp949')
-restaurant = pd.read_csv('../../data/restaurnat.csv', encoding='cp949')
+
+menu = pd.read_csv('../data/menu.csv', encoding='utf-8')
+nutrient_menu = pd.read_csv('../data/nutrient.csv', encoding='cp949')
+restaurant = pd.read_csv('../data/restaurant.csv', encoding='cp949')
+
 
 # 추천시스템 함수 작성
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def rcm(request):
 
     # user_id GET
@@ -55,4 +65,4 @@ def rcm(request):
     choice = random.randrange(0, len(not_allergy_menu))
     personal_menu = menu.iloc[not_allergy_menu[choice]]
 
-    return personal_menu
+    return Response(personal_menu)

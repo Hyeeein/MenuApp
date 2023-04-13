@@ -13,3 +13,4 @@
 * python 3.7.15
 * django 3.2.16
 * mysql 8.0.31
+* java 18

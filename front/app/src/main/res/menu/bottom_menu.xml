@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/home_04"
+        android:title="메인"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/fork_knife"
+        android:title="주변 음식점"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu"
+        android:enabled="true"
+        android:icon="@drawable/user_heart_alt_1"
+        android:title="추천"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/mypage"
+        android:enabled="true"
+        android:icon="@drawable/user_alt_1"
+        android:title="마이페이지"
+        app:showAsAction="always"/>
+
+</menu>

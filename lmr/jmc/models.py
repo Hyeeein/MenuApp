@@ -133,7 +133,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     nickname = models.CharField(max_length=20, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
-    Introduction = models.CharField(max_length=50, blank=True, null=True)
+    introduction = models.CharField(max_length=50, blank=True, null=True)
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -157,7 +157,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     NICKNAME_FIELD = 'nickname'
     GENDER_FIELD = 'gender'
     AGE_FIELD = 'age'
-    INTRODUCTION = 'Introduction'
+    INTRODUCTION_FIELD = 'introduction'
 
     class Meta:
         verbose_name = _('user')
@@ -174,15 +174,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserAllergy(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    달걀 = models.IntegerField(blank=True, null=True, default=0)
-    우유 = models.IntegerField(blank=True, null=True, default=0)
-    밀 = models.IntegerField(blank=True, null=True, default=0)
-    콩 = models.IntegerField(blank=True, null=True, default=0)
-    땅콩 = models.IntegerField(blank=True, null=True, default=0)
-    생선 = models.IntegerField(blank=True, null=True, default=0)
-    고기 = models.IntegerField(blank=True, null=True, default=0)
-    조개 = models.IntegerField(blank=True, null=True, default=0)
-    갑각류 = models.IntegerField(blank=True, null=True, default=0)
+    달걀 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    우유 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    밀 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    콩 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    땅콩 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    생선 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    고기 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    조개 = models.CharField(max_length=10, blank=True, null=True, default="0")
+    갑각류 = models.CharField(max_length=10, blank=True, null=True, default="0")
     
     class Meta:
         managed = True

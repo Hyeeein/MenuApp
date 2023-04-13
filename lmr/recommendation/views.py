@@ -31,7 +31,7 @@ def rcm(request):
 
     # 알러지에 해당하는 음식 리스트 추가
     for i in range(len(allergy_list)):
-        if user_allergy.iloc[user_id][i] == 1:
+        if user_allergy.iloc[user_id][i] == '1':
             personal_allergy_list.append(allergy_list[i])
     
     # nutrient 파일에서 해당 알러지가 없는 메뉴 리스트업

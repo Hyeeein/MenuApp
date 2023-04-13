@@ -33,31 +33,31 @@ class MenuSerializer(ModelSerializer):
         shellfish = UserAllergy.objects.get(user=user.id).조개
         crustaceans = UserAllergy.objects.get(user=user.id).갑각류
 
-        if egg==1:
+        if egg=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="달걀").exists():
                 return True
-        if milk==1:
+        if milk=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="우유").exists():
                 return True
-        if wheat==1:
+        if wheat=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="밀").exists():
                 return True
-        if bean==1:
+        if bean=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="콩").exclude(allergy__contains="땅콩").exists():
                 return True
-        if peanut==1:
+        if peanut=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="땅콩").exists():
                 return True
-        if fish==1:
+        if fish=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="생선").exists():
                 return True
-        if meat==1:
+        if meat=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="고기").exists():
                 return True
-        if shellfish==1:
+        if shellfish=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="조개").exists():
                 return True
-        if crustaceans==1:
+        if crustaceans=='1':
             if Nutrition.objects.filter(menu=obj.id, allergy__contains="갑각류").exists():
                 return True
         else:
@@ -128,4 +128,4 @@ class PreMenuSerializer(ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'nickname', 'Introduction')
+        fields = ('username', 'email', 'nickname', 'introduction')

@@ -6,6 +6,7 @@ from .serializers import *
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 import random
+import requests
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

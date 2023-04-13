@@ -65,8 +65,4 @@ def rcm(request):
     choice = random.randrange(0, len(not_allergy_menu))
     personal_menu = menu.iloc[not_allergy_menu[choice]]
 
-<<<<<<< HEAD
-    return personal_menu
-=======
     return Response(personal_menu)
->>>>>>> ac63119acbf6aed7fddcc642f04daabeb4818e7e

@@ -1,25 +1,68 @@
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.db.models import Max
+
+from jmc.models import *
 
 import numpy as np
 import pandas as pd
+import random
+
 from sklearn.feature_extraction import text
 from sklearn.metrics.pairwise import cosine_similarity
 
 import warnings
 warnings.filterwarnings('ignore')
 
-# 사용자 정보 불러오기
-# Client = 
+# 데이터 불러오기
 
-# 1. 알러지 정보 제외하고 추천
+menu = pd.read_csv('../data/menu.csv', encoding='utf-8')
+nutrient_menu = pd.read_csv('../data/nutrient.csv', encoding='cp949')
+restaurant = pd.read_csv('../data/restaurant.csv', encoding='cp949')
 
 
-# 2. 사용자가 좋아요/위시리스트에 담은 음식 기준으로 추천
+# 추천시스템 함수 작성
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def rcm(request):
 
-# 3. 
+    # user_id GET
+    user_id = request.session.get('user_id')
 
-# 1. 사용자에게 알러지가 있는 경우, 제외하고 추천
+    ### [기능 1] 사용자 정보에서 알러지 해당 메뉴 제외하고 추천
+    user_allergy = UserAllergy.objects.filter(user_id=user_id).values()
 
-# 2. 사용자가 좋아요한 음식들 + 위시리스트에 넣은 음식점들 반영
+    allergy_list = list(user_allergy) # 알러리 종류
+    personal_allergy_list = []        # 유저별 알러지 임시로 담아둘 리스트
 
-# 3. 최근 일주일 동안 사용자가 먹지 않은 음식 추천
+    # 알러지에 해당하는 음식 리스트 추가
+    for i in range(len(allergy_list)):
+        if user_allergy.iloc[user_id][i] == '1':
+            personal_allergy_list.append(allergy_list[i])
+    
+    # nutrient 파일에서 해당 알러지가 없는 메뉴 리스트업
+    not_allergy_menu = []
+
+    for i in range(len(nutrient_menu)):
+        allergy = str(nutrient_menu.iloc[i]['allergy'])
+        allergy_list = allergy.split(',0')
+
+        # 해당 알러지가 있는 메뉴를 제외한 메뉴 인덱스 리스트업
+        add_menu = ''
+
+        for j in allergy_list:
+            if j not in personal_allergy_list:
+                add_menu = 1
+        
+        if add_menu == 1:
+            not_allergy_menu.append(i)
+    
+    # 알러지 없는 메뉴 중 한 가지 랜덤 선택 후 추천
+    choice = random.randrange(0, len(not_allergy_menu))
+    personal_menu = menu.iloc[not_allergy_menu[choice]]
+
+    return Response(personal_menu)

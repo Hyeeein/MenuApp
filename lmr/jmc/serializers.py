@@ -60,6 +60,7 @@ class MenuSerializer(ModelSerializer):
         except UserAllergy.DoesNotExist:
             crustaceans = 0
 
+<<<<<<< HEAD
         if egg==1 and Nutrition.objects.filter(menu=obj.id, allergy__contains="달걀").exists():
             return True
         elif milk==1 and Nutrition.objects.filter(menu=obj.id, allergy__contains="우유").exists():
@@ -78,6 +79,35 @@ class MenuSerializer(ModelSerializer):
             return True
         elif crustaceans==1 and Nutrition.objects.filter(menu=obj.id, allergy__contains="갑각류").exists():
             return True
+=======
+        if egg=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="달걀").exists():
+                return True
+        if milk=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="우유").exists():
+                return True
+        if wheat=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="밀").exists():
+                return True
+        if bean=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="콩").exclude(allergy__contains="땅콩").exists():
+                return True
+        if peanut=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="땅콩").exists():
+                return True
+        if fish=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="생선").exists():
+                return True
+        if meat=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="고기").exists():
+                return True
+        if shellfish=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="조개").exists():
+                return True
+        if crustaceans=='1':
+            if Nutrition.objects.filter(menu=obj.id, allergy__contains="갑각류").exists():
+                return True
+>>>>>>> 87153fccde20f42082f8b8245920c436edb323c8
         else:
             return False
 
@@ -85,6 +115,8 @@ class UserNicknameSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ['nickname']
+
+
 
 class MenuNameSerializer(ModelSerializer):
     
@@ -141,3 +173,7 @@ class PreMenuSerializer(ModelSerializer):
         model = PreferredMenu
         fields = '__all__'
     
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'nickname', 'introduction')

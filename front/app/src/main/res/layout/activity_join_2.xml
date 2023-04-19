@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JoinActivity2">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" >
+
+
+        <TextView
+            android:id="@+id/txt_join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="회원 가입"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/txt_join_year"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="출생연도"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:id="@+id/spinner_year"
+                android:layout_width="118dp"
+                android:layout_height="48dp"
+                android:layout_marginLeft="20dp"
+                android:entries="@array/출생연도"
+                android:background="@drawable/spinner_background"
+                android:theme="@style/SpinnerDivideStyle"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+        <!-- 성별 -->
+             <TextView
+                android:id="@+id/txt_join_gender"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="성별"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+
+            <Spinner
+                android:id="@+id/spinner_gender"
+                android:layout_width="118dp"
+                android:layout_height="48dp"
+                android:entries="@array/성별"
+                android:background="@drawable/spinner_background"
+                android:theme="@style/SpinnerDivideStyle"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_join_2"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="다음"
+            android:textStyle="bold"
+            android:backgroundTint="#82B1FF">
+
+        </Button>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

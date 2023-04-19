@@ -6,6 +6,7 @@ from .serializers import *
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 import random
+import requests
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -133,3 +134,62 @@ def postMenuPreference(request):
     defaults={'preference': request.data['preference']},
     )
     return Response({"message":"update success"}, status=200)
+
+
+########마이페이지 관련 로직########
+@api_view(['GET']) # 마이페이지 한줄소개 데이터 조회
+@permission_classes([IsAuthenticated])
+def IntroView(request):
+    tmp = User.objects.get(id=request.user.id)
+    return Response({tmp.Introduction})
+
+@api_view(['GET']) # 내 정보 수정에서 이메일, 닉네임, 한줄소개 데이터 조회
+@permission_classes([IsAuthenticated])
+def MyUpdateView(request):
+    tmp = User.objects.get(id=request.user.id)
+    return Response({
+        "nickname":tmp.nickname,
+        "email":tmp.email,
+        "Introduction":tmp.Introduction,
+    })
+
+@api_view(['PUT']) # 내 정보 수정의 이메일, 닉네임, 한줄소개 수정
+@permission_classes([IsAuthenticated])
+def update_user(request):
+    user = request.user
+    serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+########메인화면 관련 로직########
+@api_view(['GET']) # 마이페이지, 메인화면에 닉네임 데이터 전달
+@permission_classes([IsAuthenticated])
+def MypageView(request):
+    tmp = User.objects.get(id=request.user.id)
+    return Response({tmp.nickname})
+
+@api_view(['GET']) # 클라이언트에게 x,y(위도,경도) 값을 받아 현재 위치의 주소를 전달
+@permission_classes([IsAuthenticated])
+def AddressView(request):
+    x = request.data.get('x')
+    y = request.data.get('y')
+
+    # 카카오맵 API에 전송할 파라미터 설정
+    params = {
+        'x': x,
+        'y': y,
+        'input_coord': 'WGS84'
+    }
+
+    # 카카오맵 API 호출
+    response = requests.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', params=params, headers={'Authorization': 'KakaoAK 3814bc255242261da656c6c6779ffb78'})
+
+    # 응답 처리
+    if response.status_code == 200:
+        result = response.json()['documents'][0]['address']['address_name']
+    else:
+        result = 'Failed to get address'
+
+    return Response({'result': result})

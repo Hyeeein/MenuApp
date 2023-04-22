@@ -29,15 +29,6 @@
             android:layout_marginTop="35dp"
             android:orientation="horizontal" >
 
-            <ImageButton
-                android:id="@+id/imgbtn_setting"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/arrow_left_large"
-                android:backgroundTint="#faf4c0" />
-
             <TextView
                 android:id="@+id/txt_setting"
                 android:layout_width="wrap_content"
@@ -67,7 +58,7 @@
 
                 <TextView
                     android:id="@+id/txt_setting2"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="3dp"
@@ -77,11 +68,20 @@
 
                 <EditText
                     android:id="@+id/name_setting"
-                    android:layout_width="225dp"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textSize="17sp"
                     android:textColor="#4c4c4c" />
+
+                <Button
+                    android:id="@+id/btn_checkname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#747474"
+                    android:textStyle="bold"
+                    android:backgroundTint="#ffffff"
+                    android:text="중복 확인"/>
 
             </LinearLayout>
 
@@ -94,7 +94,7 @@
 
                 <TextView
                     android:id="@+id/txt_setting3"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="3dp"
@@ -127,12 +127,12 @@
                     android:textSize="20dp"
                     android:textColor="@color/black"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/introduce_setting"
                     android:layout_width="225dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="인천대 푸파 입니다."
+                    android:text="먹짱입니다."
                     android:textSize="17sp"
                     android:textColor="#4c4c4c" />
 
@@ -152,7 +152,7 @@
             android:background="#EAEAEA" />
 
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="330dp"
             android:layout_height="150dp"
             android:orientation="vertical"
             android:layout_marginTop="10dp"
@@ -177,37 +177,54 @@
                 <TextView
                     android:id="@+id/allergie_setting"
                     android:layout_width="175dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textColor="#4c4c4c" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
-                <TextView
-                    android:id="@+id/txt_setting56"
+                <LinearLayout
                     android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="3dp"
-                    android:text="선호 음식"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txt_setting56"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="3dp"
+                        android:text="선호 음식"
+                        android:textSize="20dp"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/btn_setting_like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="추가"
+                        android:textColor="#584B00"
+                        android:textStyle="bold"
+                        android:backgroundTint="#faf4c0"/>
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/like_setting"
-                    android:layout_width="175dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textColor="#4c4c4c" />
 
             </LinearLayout>

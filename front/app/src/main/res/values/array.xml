@@ -142,4 +142,22 @@
         <item>49000</item>
         <item>50000</item>
     </integer-array>
+    
+    <string-array name="날씨">
+        <item>맑음</item>
+        <item>구름</item>
+        <item>비</item>
+        <item>눈</item>
+        <item>황사</item>
+        <item>상관없음</item>
+    </string-array>
+
+    <string-array name="기분">
+        <item>배고픔</item>
+        <item>적당</item>
+        <item>기쁨</item>
+        <item>피곤</item>
+        <item>스트레스</item>
+        <item>상관없음</item>
+    </string-array>
 </resources>

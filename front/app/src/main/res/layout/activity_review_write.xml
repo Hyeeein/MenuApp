@@ -7,315 +7,314 @@
     android:layout_height="match_parent"
     tools:context=".ReviewWriteActivity">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:background="#faf4c0" />
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06"
+        android:orientation="horizontal" >
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/imgbtn_review"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_left_large"
+            android:backgroundTint="#faf4c0" />
+
+        <TextView
+            android:id="@+id/txt_review"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:text="리뷰를 남겨주세요"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="#584B00"/>
 
-        </FrameLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigationview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:labelVisibilityMode="labeled"
-            app:itemBackground="@color/white"
-            app:menu="@menu/bottom_menu" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imgbtn_review"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/backarrow"
-        android:backgroundTint="@color/white"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="30dp"
-        tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/txt_review"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="3dp"
-        android:text="리뷰를 남겨주세요"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="33dp"
-        tools:ignore="MissingConstraints" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-    <View
-        android:layout_width="370dp"
-        android:layout_height="4px"
-        android:background="#747474"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="90dp"
-        tools:ignore="MissingConstraints" />
-
-    <LinearLayout
-        android:layout_width="370dp"
-        android:layout_height="500dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="110dp"
-        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/img_review"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="3dp"
-                android:src="@drawable/burger_real" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginLeft="7dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="70dp"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/rname_review"
-                        android:layout_width="200dp"
-                        android:layout_height="match_parent"
-                        android:text="양평해장국 인천대점"
-                        android:gravity="bottom"
-                        android:textStyle="bold"
-                        android:textSize="20dp" />
+                    <ImageView
+                        android:id="@+id/rimg_review"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp" />
 
-                    <TextView
-                        android:id="@+id/menu_review"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="해장국"
-                        android:gravity="bottom"
-                        android:textStyle="bold"
-                        android:textSize="18dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="7dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/rname_review"
+                                android:layout_width="200dp"
+                                android:layout_height="match_parent"
+                                android:text="양평해장국 인천대점"
+                                android:gravity="bottom"
+                                android:textSize="20dp" />
+
+                            <TextView
+                                android:id="@+id/menu_review"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="해장국"
+                                android:gravity="bottom"
+                                android:textSize="18dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/date_review"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="2023.03.15. 수"
+                                android:gravity="bottom"
+                                android:textSize="18dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
+                    android:gravity="bottom|left"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/date_review"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txt_review2"
+                        android:layout_width="70dp"
                         android:layout_height="match_parent"
-                        android:text="2023.03.15. 수"
+                        android:layout_marginLeft="15dp"
+                        android:text="평점"
                         android:gravity="bottom"
-                        android:textSize="18dp" />
+                        android:textSize="20dp" />
+
+                    <RatingBar
+                        android:id="@+id/review_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:isIndicator="false"
+                        android:numStars="5"
+                        android:rating="0"
+                        android:stepSize="0.5"
+                        android:max="5"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_review3"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:text="리뷰작성"
+                        android:gravity="center_vertical"
+                        android:textSize="20dp" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="100dp"/>
+                    <Button
+                        android:id="@+id/btn_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginLeft="10dp"
+                        android:text="사진첨부"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edit_review"
+                    android:layout_width="338dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="12dp"
+                    android:hint="리뷰 내용을 입력해 주세요."
+                    android:textSize="15sp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="@drawable/txt_border" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_review4"
+                        android:layout_width="130dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:text="키워드로 작성"
+                        android:gravity="bottom"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center" >
+
+                    <Button
+                        android:id="@+id/btn_good"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="최고예요!"
+                        android:textSize="15sp"
+                        android:textColor="#747474"
+                        android:background="@drawable/btn_review"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_soso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="낫 배드"
+                        android:textSize="15sp"
+                        android:textColor="#747474"
+                        android:background="@drawable/btn_review"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_bad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="별로예요..."
+                        android:textSize="15sp"
+                        android:textColor="#747474"
+                        android:background="@drawable/btn_review"
+                        app:backgroundTint="@null"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center" >
+
+                    <Button
+                        android:id="@+id/btn_fast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="빨리 나와요"
+                        android:textSize="15sp"
+                        android:textColor="#747474"
+                        android:background="@drawable/btn_review"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/btn_god"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="갓성비!"
+                        android:textSize="15sp"
+                        android:textColor="#747474"
+                        android:background="@drawable/btn_review"
+                        app:backgroundTint="@null"/>
+
                 </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="저장"
+                    android:textStyle="bold">
+                </Button>
 
-        <TextView
-            android:id="@+id/txt_review2"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="15dp"
-            android:text="평점"
-            android:gravity="bottom"
-            android:textStyle="bold"
-            android:textSize="20dp" />
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="취소"
+                    android:textStyle="bold">
 
-
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txt_review3"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:text="리뷰작성"
-                android:gravity="center_vertical"
-                android:textStyle="bold"
-                android:textSize="20dp" />
-
-            <Button
-                android:id="@+id/btn_review"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_gravity="right|bottom"
-                android:layout_marginLeft="170dp"
-                android:text="사진첨부"
-                android:textSize="15sp" />
-
+                </Button>
+            </LinearLayout>
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/edit_review"
-            android:layout_width="338dp"
-            android:layout_height="150dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="12dp"
-            android:hint="리뷰 내용을 입력해 주세요."
-            android:background="@drawable/txt_border" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txt_review4"
-                android:layout_width="130dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:text="키워드로 작성"
-                android:gravity="bottom"
-                android:textStyle="bold"
-                android:textSize="20dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center" >
-
-            <Button
-                android:id="@+id/btn_review2"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="최고예요!"
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null" />
-
-            <Button
-                android:id="@+id/btn_review3"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:text="낫 배드"
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null" />
-
-            <Button
-                android:id="@+id/btn_review4"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:text="별로예요..."
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center" >
-
-            <Button
-                android:id="@+id/btn_review5"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="빨리 나와요"
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null" />
-
-            <Button
-                android:id="@+id/btn_review6"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:text="매장이 넓어요"
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null" />
-
-            <Button
-                android:id="@+id/btn_review7"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:text="갓성비!"
-                android:textSize="15sp"
-                android:textColor="#747474"
-                android:background="@drawable/btn_review"
-                app:backgroundTint="@null"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 
-    <Button
-        android:id="@+id/btn_review8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="저장"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.33"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9">
-    </Button>
-
-    <Button
-        android:id="@+id/btn_review9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="취소"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.67"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9">
-
-    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,408 +7,438 @@
     android:layout_height="match_parent"
     tools:context=".NutritionActivity">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:background="#faf4c0" />
+
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/name_nutrition"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:text="닭강정"
+            android:textSize="25dp"
+            android:textColor="#584B00"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:paddingTop="80dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/container">
-
-        </FrameLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigationview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:labelVisibilityMode="labeled"
-            app:itemBackground="@color/white"
-            app:menu="@menu/bottom_menu" />
-    </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/imgbtn_nutrition"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/backarrow"
-        android:backgroundTint="@color/white"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="30dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/txt_nutrition"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="3dp"
-        android:text="닭강정"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="33dp"
-        tools:ignore="MissingConstraints" />
-
-    <View
-        android:layout_width="370dp"
-        android:layout_height="4px"
-        android:background="#747474"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="90dp"
-        tools:ignore="MissingConstraints" />
-
-
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="100dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="110dp">
-
-        <TextView
-            android:id="@+id/txt_nutrition2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:text="알레르기"
-            android:textSize="20dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/allergie_nutrition"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:text="달걀, 우유, 생선"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="#4c4c4c" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="400dp"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="220dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            tools:ignore="MissingConstraints">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txt_nutrition3"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="영양 정보 (g)"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/txt_nutrition12"
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:gravity="right|bottom"
-                android:text="1회 제공량(g)"
-                android:textSize="15sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/amount_nutrition"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:gravity="bottom"
-                android:text="200"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c"/>
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginLeft="20dp">
 
+                <TextView
+                    android:id="@+id/txt_nutrition2"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:text="알레르기"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/allergie_nutrition"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="6dp"
+                    android:text="-"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#4c4c4c" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:text="재료"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/ingredient_nutrition"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="6dp"
+                    android:textSize="20dp"
+                    android:text="-"
+                    android:textStyle="bold"
+                    android:textColor="#4c4c4c" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:background="#EAEAEA" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5px"
+                android:background="#EAEAEA"/>
+
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="400dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="3dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition3"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="영양 정보 (g)"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/txt_nutrition12"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center"
+                        android:text="1회 제공량(g)"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/gram_nutrition"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition4"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="칼로리"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/kcal_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                    <TextView
+                        android:id="@+id/kcal_nutrition2"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="kcal"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition5"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="탄수화물"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/carbo_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition6"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="단백질"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/protein_nutrition"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition7"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="지방"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/fat_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition8"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="나트륨"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/sodium_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="칼륨"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/potash_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition9"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="콜레스테롤"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/chole_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition10"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="포화지방"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/satur_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/txt_nutrition11"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="불포화지방"
+                        android:textSize="18dp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/unsat_nutrition"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="-"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#4c4c4c" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition4"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="칼로리"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/kcal_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="450.04"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-            <TextView
-                android:id="@+id/kcal_nutrition2"
-                android:layout_width="180dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="kcal"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition5"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="탄수화물"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/carbo_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition6"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="단백질"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/protein_nutrition"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition7"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="지방"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/fat_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition8"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="당류"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/sugar_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition9"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="콜레스테롤"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/chole_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition10"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="포화지방산"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/satur_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/txt_nutrition11"
-                android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="트랜스지방"
-                android:textSize="18dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/trans_nutrition"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="xxx"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:textColor="#4c4c4c" />
-
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:background="@color/purple_200"/>
-
-
-    </LinearLayout>
-
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

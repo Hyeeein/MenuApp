@@ -7,67 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".WishlistActivity">
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="90dp"
+        android:background="#faf4c0" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:background="#faf4c0" />
-
-        </FrameLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigationview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:labelVisibilityMode="labeled"
-            app:itemBackground="@color/white"
-            app:menu="@menu/bottom_menu" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="가고 싶은 음식점"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/imgbtn_wishlist"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/arrow_left_large"
-        android:backgroundTint="@color/white"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="30dp"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/txt_wishlist"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="3dp"
-        android:text="가고 싶은 음식점"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="33dp"
-        tools:ignore="MissingConstraints" />
-
-    <View
-        android:layout_width="370dp"
-        android:layout_height="4px"
-        android:background="#747474"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="90dp"
-        tools:ignore="MissingConstraints" />
 
     <ListView
         android:id="@+id/listv_wishlist"

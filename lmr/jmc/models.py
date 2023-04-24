@@ -187,3 +187,11 @@ class UserAllergy(models.Model):
     class Meta:
         managed = True
         db_table = 'user_allergy'
+
+class Resfav(models.Model):
+    user = models.ForeignKey('User', models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, models.DO_NOTHING)
+    
+    class Meta:
+        managed = True
+        db_table = 'restaurant_favorite'

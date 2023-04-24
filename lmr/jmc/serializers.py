@@ -5,14 +5,23 @@ from .models import *
 
 class RestaurantSerializer(ModelSerializer):
     rating = serializers.SerializerMethodField()
+    favor = serializers.SerializerMethodField()
     
     class Meta:
         model = Restaurant
-        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating')
+        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','favor')
 
     def get_rating(self, obj):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
         return rating
+
+    def get_favor(self, obj):
+        user = self.context.get("request").user
+        favor = Resfav.objects.filter(restaurant=obj.id, user=user.id)
+        if favor.first()==None:
+            return False
+        else:
+            return True
 
 class MenuSerializer(ModelSerializer):
     checkallergy = serializers.SerializerMethodField()
@@ -146,4 +155,4 @@ class PreMenuSerializer(ModelSerializer):
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'nickname', 'introduction')
+        fields = ('nickname', 'introduction')

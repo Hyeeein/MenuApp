@@ -120,11 +120,11 @@
                 tools:ignore="MissingConstraints">
 
                 <Button
-                    android:id="@+id/btn_main_survey"
+                    android:id="@+id/btn_main_review"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="6.5dp"
-                    android:text="취향 평가"
+                    android:text="리뷰 관리"
                     android:textStyle="bold"
                     android:backgroundTint="#ffffff"
                     android:textColor="@color/black">

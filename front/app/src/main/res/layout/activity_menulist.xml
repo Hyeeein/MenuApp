@@ -1,55 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#82B1FF"
     tools:context=".MenulistActivity">
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="33dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/imgbtn_setting"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_left_large"
+            android:backgroundTint="#82B1FF" />
+
+        <TextView
+            android:id="@+id/txt_menulist"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:text="메뉴"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:background="#82B1FF" />
-
-        </FrameLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigationview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:labelVisibilityMode="labeled"
-            app:itemBackground="@color/white"
-            app:menu="@menu/bottom_menu" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt_menulist"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="3dp"
-        android:text="메뉴"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="33dp"
-        tools:ignore="MissingConstraints" />
 
     <View
         android:layout_width="370dp"

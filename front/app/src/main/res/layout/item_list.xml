@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,14 +45,14 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <ImageButton
+                <CheckBox
                     android:id="@+id/imgbtn_list"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="10dp"
                     android:layout_gravity="center"
-                    android:backgroundTint="#ffffff"
-                    android:src="@drawable/heart_outline"
-                    tools:ignore = "SpeakableTextPresentCheck" />
+                    android:button="@android:color/transparent"
+                    android:background="@drawable/imgbtn_wish"/>
 
             </LinearLayout>
 

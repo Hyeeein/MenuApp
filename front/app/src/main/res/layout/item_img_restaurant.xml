@@ -6,10 +6,10 @@
     android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/recyclerv_item"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_weight="1"
-        android:background="@color/white"
-        android:src="@drawable/burger_real" />
+        android:background="@color/white" />
 
 </LinearLayout>

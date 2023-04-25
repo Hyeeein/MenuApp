@@ -121,7 +121,7 @@ def getMenuPreference(request, n):
     else:
         n = 50
     random.seed(request.user.id)
-    pk = random.sample(range(1, max_id+1),mc)
+    pk = random.sample(range(1, max_id+1),max_id)
     menu = Menu.objects.none()
     c = 0
     i = 0

@@ -143,7 +143,7 @@ class MenuPreSerializer(ModelSerializer):
         user = self.context.get("request").user
         pre = PreferredMenu.objects.filter(user=user.id, menu=obj.id).first()
         if pre is None:
-            return 0
+            return -2
         preference = pre.preference
         return preference
 

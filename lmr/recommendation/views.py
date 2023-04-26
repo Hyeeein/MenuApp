@@ -19,9 +19,14 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # 데이터 불러오기
-menu = pd.read_csv('../data/menu.csv', encoding='utf-8')
-nutrient_menu = pd.read_csv('../data/nutrient.csv', encoding='cp949')
-restaurant = pd.read_csv('../data/restaurant.csv', encoding='cp949')
+menu_db = Menu.objects.all()
+nutrient_db = Nutrition.objects.all()
+restaurant_db = Restaurant.objects.all()
+
+# Dataframe 형태로 변환
+menu = pd.DataFrame(list(menu_db.values()))
+nutrient_menu = pd.DataFrame(list(nutrient_db.values()))
+restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성

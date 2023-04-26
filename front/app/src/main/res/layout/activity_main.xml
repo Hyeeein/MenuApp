@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#faf4c0"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" >
+
+
+        <LinearLayout
+            android:layout_width="320dp"
+            android:layout_height="96dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/name_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="닉네임"
+                    android:textSize="22dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txt_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="님의 현재 위치"
+                    android:textSize="18dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/location_main"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="인천대학교"
+                android:textSize="22dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="330dp"
+            android:layout_height="5px"
+            android:background="#D6C8A1"
+            android:layout_marginTop="50dp"/>
+
+        <LinearLayout
+            android:layout_width="320dp"
+            android:layout_height="300dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/btn_main_list"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="6.5dp"
+                    android:text="주변 음식점 조회"
+                    android:textStyle="bold"
+                    android:backgroundTint="#ffffff"
+                    android:textColor="@color/black">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_main_menu"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6.5dp"
+                    android:text="메뉴 추천"
+                    android:textStyle="bold"
+                    android:backgroundTint="#ffffff"
+                    android:textColor="@color/black">
+
+                </Button>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/btn_main_review"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="6.5dp"
+                    android:text="리뷰 관리"
+                    android:textStyle="bold"
+                    android:backgroundTint="#ffffff"
+                    android:textColor="@color/black">
+                </Button>
+
+                <Button
+                    android:id="@+id/btn_main_mypage"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6.5dp"
+                    android:text="마이페이지"
+                    android:textStyle="bold"
+                    android:backgroundTint="#ffffff"
+                    android:textColor="@color/black">
+                </Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

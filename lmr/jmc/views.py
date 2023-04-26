@@ -12,13 +12,12 @@ import requests
 @permission_classes([IsAuthenticated])
 def getRestaurant(request):
     datas = Restaurant.objects.all()
-    serializer = RestaurantSerializer(datas, many=True)
+    serializer = RestaurantSerializer(datas, context={'request': request}, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMenuByRestaurant(request, restaurant):
-    uid = request.user.id
     datas = Menu.objects.filter(restaurant=restaurant)
     serializer = MenuSerializer(datas, context={'request': request}, many=True)
     return Response(serializer.data)
@@ -111,16 +110,26 @@ def deleteReview(request, id):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getMenuPreference(request):
-    max_id = Menu.objects.all().aggregate(max_id=Max("id"))['max_id']
+def getMenuPreference(request, n):
+    menuobj = Menu.objects.all()
+    max_id = menuobj.aggregate(max_id=Max("id"))['max_id']
+    mc= menuobj.count()
+    if n > mc:
+        n = mc
+    elif n >= 1 and n <= mc:
+        pass
+    else:
+        n = 50
     random.seed(request.user.id)
-    pk = random.randint(1, max_id)
+    pk = random.sample(range(1, max_id+1),max_id)
     menu = Menu.objects.none()
     c = 0
-    while c < 30:
-        pk = random.randint(1, max_id)
-        menu = menu.union(Menu.objects.filter(id=pk))
-        c+=1
+    i = 0
+    while c < n:
+        menu = menu.union(Menu.objects.filter(id=pk[i]))
+        if Menu.objects.filter(id=pk[i]).first()!=None:
+            c+=1
+        i+=1
     datas = menu
     serializer = MenuPreSerializer(datas, context={'request': request}, many=True)
     return Response(serializer.data)
@@ -135,46 +144,29 @@ def postMenuPreference(request):
     )
     return Response({"message":"update success"}, status=200)
 
-
-########마이페이지 관련 로직########
-@api_view(['GET']) # 마이페이지 한줄소개 데이터 조회
-@permission_classes([IsAuthenticated])
-def IntroView(request):
-    tmp = User.objects.get(id=request.user.id)
-    return Response({tmp.Introduction})
-
-@api_view(['GET']) # 내 정보 수정에서 이메일, 닉네임, 한줄소개 데이터 조회
-@permission_classes([IsAuthenticated])
-def MyUpdateView(request):
-    tmp = User.objects.get(id=request.user.id)
-    return Response({
-        "nickname":tmp.nickname,
-        "email":tmp.email,
-        "Introduction":tmp.Introduction,
-    })
-
-@api_view(['PUT']) # 내 정보 수정의 이메일, 닉네임, 한줄소개 수정
-@permission_classes([IsAuthenticated])
-def update_user(request):
-    user = request.user
-    serializer = UserUpdateSerializer(user, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-########메인화면 관련 로직########
-@api_view(['GET']) # 마이페이지, 메인화면에 닉네임 데이터 전달
+@api_view(['GET','PUT']) # 내 정보 수정에서 이메일, 닉네임, 한줄소개 데이터 조회
 @permission_classes([IsAuthenticated])
 def MypageView(request):
-    tmp = User.objects.get(id=request.user.id)
-    return Response({tmp.nickname})
+    if request.method == 'GET':
+        tmp = User.objects.get(id=request.user.id)
+        return Response({
+            "nickname":tmp.nickname,
+            "email":tmp.email,
+            "introduction":tmp.introduction,
+        })
+    elif request.method == 'PUT':
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET']) # 클라이언트에게 x,y(위도,경도) 값을 받아 현재 위치의 주소를 전달
+@api_view(['POST']) # 클라이언트에게 x,y(위도,경도) 값을 받아 현재 위치의 주소를 전달
 @permission_classes([IsAuthenticated])
 def AddressView(request):
-    x = request.data.get('x')
-    y = request.data.get('y')
+    x = request.data.get('longitude')
+    y = request.data.get('latitude')
 
     # 카카오맵 API에 전송할 파라미터 설정
     params = {
@@ -184,8 +176,8 @@ def AddressView(request):
     }
 
     # 카카오맵 API 호출
-    response = requests.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', params=params, headers={'Authorization': 'KakaoAK 3814bc255242261da656c6c6779ffb78'})
-
+    response = requests.get('https://dapi.kakao.com/v2/local/geo/coord2address.json', params=params, headers={'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'})
+    
     # 응답 처리
     if response.status_code == 200:
         result = response.json()['documents'][0]['address']['address_name']
@@ -193,3 +185,12 @@ def AddressView(request):
         result = 'Failed to get address'
 
     return Response({'result': result})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def postResfav(request):
+    try:
+        Resfav.objects.get(user_id=request.user.id, restaurant_id=request.data['restaurant']).delete()
+    except Resfav.DoesNotExist:
+        Resfav.objects.create(user_id=request.user.id, restaurant_id=request.data['restaurant'])
+    return Response({"message":"success"}, status=200)

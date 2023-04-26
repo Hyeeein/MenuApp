@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MenuApp_Test" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black</item>              <!-- 타이틀바 -->
+        <item name="colorPrimaryVariant">@color/black</item>      <!--  상태바 -->
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#faf4c0</item>
+        <item name="colorSecondaryVariant">#faf4c0</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">#000000</item>
+        <item name="android:dividerHeight">2dp</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="Theme.MenuApp_Test">
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+    </style>
+</resources>

@@ -13,10 +13,10 @@ urlpatterns = [
     path('review/delete/<int:id>', views.deleteReview), # 리뷰 삭제 url
     path('preference/<int:n>', views.getMenuPreference),
     path('preference/update', views.postMenuPreference),
-
     #마이페이지url#
     path('mypage', views.MypageView), # 내 정보 수정에서 사용자 정보(이메일, 한줄소개, 닉네임) 조회 url
     #메인화면url#
     path('address', views.AddressView), # 사용자 현재 위치의 주소 출력 url(메인화면 페이지)
+    path('aroundrestaurant', views.AroundRestaurant), # 사용자 주변 음식점 출력 url(음식점 조회 페이지)
     path('favorite', views.postResfav),
 ]

@@ -156,3 +156,25 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('nickname', 'introduction')
+
+class AroundRestaurantSerializer(serializers.ModelSerializer):
+    rating = serializers.SerializerMethodField()
+    favor = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Restaurant
+        fields = ('id','name','address','image','rating','favor')
+    
+    
+    def get_rating(self, obj):
+        rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
+        return rating
+
+    def get_favor(self, obj):
+        user = self.context.get("request").user
+        favor = Resfav.objects.filter(restaurant=obj.id, user=user.id)
+        if favor.first()==None:
+            return False
+        else:
+            return True
+    

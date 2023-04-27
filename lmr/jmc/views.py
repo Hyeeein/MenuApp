@@ -7,6 +7,21 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 import random
 import requests
+from math import radians, sin, cos, sqrt, atan2
+
+
+def distance(lat1, lon1, lat2, lon2):
+    R = 6371 # 지구의 반경 (km)
+    dLat = radians(lat2 - lat1)
+    dLon = radians(lon2 - lon1)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+
+    a = sin(dLat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dLon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    return distance
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -185,6 +200,45 @@ def AddressView(request):
         result = 'Failed to get address'
 
     return Response({'result': result})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def AroundRestaurant(request):
+    headers = {'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'}  # 자신의 API 키
+    mylongitude = request.data.get('longitude')
+    mylatitude = request.data.get('latitude')
+
+    tmp = Restaurant.objects.filter(address__contains='')
+    serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)
+
+    restlist = []
+    
+    i = 0
+    n = len(serializer.data)
+    while i<n:
+        address = serializer.data[i]['address']
+
+        # API 요청 URL 구성
+        url = f'https://dapi.kakao.com/v2/local/search/address.json?query={address}'
+
+        # API 요청 및 응답 받기
+        response = requests.get(url, headers=headers).json()
+
+        # 결과 파싱하여 위도, 경도 출력
+        if 'documents' in response and response['documents']:
+            data = response['documents'][0]['address']
+            latitude, longitude = float(data['y']), float(data['x'])
+            
+            # 위도, 경도 정보를 반환
+            dist = distance(mylatitude, mylongitude, latitude, longitude)
+            #print("나와 음식점 사이의 거리", dist*1000)
+            if dist <= 1:
+                serializer.data[i]['distance'] = int(dist * 1000) # 나와 음식점 사이의 거리(미터)
+                restlist.append(serializer.data[i])
+        i+=1
+
+    return Response(restlist, status=200)
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

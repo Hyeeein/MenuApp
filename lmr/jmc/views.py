@@ -201,7 +201,7 @@ def AddressView(request):
 
     return Response({'result': result})
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AroundRestaurant(request):
     headers = {'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'}  # 자신의 API 키
@@ -228,6 +228,7 @@ def AroundRestaurant(request):
         if 'documents' in response and response['documents']:
             data = response['documents'][0]['address']
             latitude, longitude = float(data['y']), float(data['x'])
+            #print(longitude, latitude)
             
             # 위도, 경도 정보를 반환
             dist = distance(mylatitude, mylongitude, latitude, longitude)

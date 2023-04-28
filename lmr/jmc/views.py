@@ -89,21 +89,28 @@ def getReview(request, id):
     except Review.DoesNotExist:
         return Response(status=404)
     serializer = ReviewGetSerializer(data)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET']) # 사용자가 작성한 리뷰 조회
 @permission_classes([IsAuthenticated])
 def getUserReview(request):
     tmp = Review.objects.filter(user_id=request.user.id)
     serializer = ReviewGetSerializer(tmp, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST']) # 리뷰 작성 로직
 @permission_classes([IsAuthenticated])
 def postReview(request):
     if request.method == 'POST':
         uid = {"user":request.user.id}
-        datas = dict(request.data, **uid)
+        #datas = dict(request.data, **uid)
+        datas = {"rating" : request.POST['rating'],
+                 "content" : request.POST['content'],
+                 "menu" : request.POST['menu'],
+                 "restaurant" : request.POST['restaurant']}
+        image = {"image":request.FILES['image']}
+        datas.update(uid)
+        datas.update(image)
         serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()
@@ -195,18 +202,22 @@ def AddressView(request):
     
     # 응답 처리
     if response.status_code == 200:
-        result = response.json()['documents'][0]['address']['address_name']
+        try:
+            result = response.json()['documents'][0]['address']['address_name']
+        except:
+            result = 'Failed to get address'
+            return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
     else:
         result = 'Failed to get address'
+        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'result': result})
+    return Response({'result': result}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AroundRestaurant(request):
-    headers = {'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'}  # 자신의 API 키
-    mylongitude = float(request.data.get('longitude'))
-    mylatitude = float(request.data.get('latitude'))
+    mylongitude = request.data.get('longitude')
+    mylatitude = request.data.get('latitude')
 
     tmp = Restaurant.objects.filter(address__contains='')
     serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)
@@ -216,26 +227,10 @@ def AroundRestaurant(request):
     i = 0
     n = len(serializer.data)
     while i<n:
-        address = serializer.data[i]['address']
-
-        # API 요청 URL 구성
-        url = f'https://dapi.kakao.com/v2/local/search/address.json?query={address}'
-
-        # API 요청 및 응답 받기
-        response = requests.get(url, headers=headers).json()
-
-        # 결과 파싱하여 위도, 경도 출력
-        if 'documents' in response and response['documents']:
-            data = response['documents'][0]['address']
-            latitude, longitude = float(data['y']), float(data['x'])
-            #print(longitude, latitude)
-            
-            # 위도, 경도 정보를 반환
-            dist = distance(mylatitude, mylongitude, latitude, longitude)
-            #print("나와 음식점 사이의 거리", dist*1000)
-            if dist <= 1:
-                serializer.data[i]['distance'] = int(dist * 1000) # 나와 음식점 사이의 거리(미터)
-                restlist.append(serializer.data[i])
+        dist = distance(mylatitude, mylongitude, serializer.data[i]['latitude'], serializer.data[i]['longitude'])
+        if dist <= 1:
+            serializer.data[i]['distance'] = int(dist * 1000)
+            restlist.append(serializer.data[i])
         i+=1
 
     return Response(restlist, status=200)

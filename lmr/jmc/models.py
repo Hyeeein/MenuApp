@@ -75,6 +75,8 @@ class Restaurant(models.Model):
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     category_name = models.CharField(max_length=45, blank=True, null=True)
     image = models.ImageField(upload_to='restaurant/',blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = True

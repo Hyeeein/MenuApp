@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'accounts',
     'recommendation',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

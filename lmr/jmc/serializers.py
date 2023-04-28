@@ -163,7 +163,7 @@ class AroundRestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ('id','name','address','image','rating','favor')
+        fields = ('id','name','address','image','rating','favor','longitude','latitude')
     
     
     def get_rating(self, obj):

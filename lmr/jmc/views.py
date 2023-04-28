@@ -103,7 +103,14 @@ def getUserReview(request):
 def postReview(request):
     if request.method == 'POST':
         uid = {"user":request.user.id}
-        datas = dict(request.data, **uid)
+        #datas = dict(request.data, **uid)
+        datas = {"rating" : request.POST['rating'],
+                 "content" : request.POST['content'],
+                 "menu" : request.POST['menu'],
+                 "restaurant" : request.POST['restaurant']}
+        image = {"image":request.FILES['image']}
+        datas.update(uid)
+        datas.update(image)
         serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()
@@ -209,8 +216,14 @@ def AddressView(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AroundRestaurant(request):
+<<<<<<< HEAD
     mylongitude = request.data.get('longitude')
     mylatitude = request.data.get('latitude')
+=======
+    headers = {'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'}  # 자신의 API 키
+    mylongitude = float(request.data.get('longitude'))
+    mylatitude = float(request.data.get('latitude'))
+>>>>>>> bffc0b7500849f1da46612ff527624159ee6c36e
 
     tmp = Restaurant.objects.filter(address__contains='')
     serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)

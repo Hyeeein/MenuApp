@@ -216,14 +216,8 @@ def AddressView(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def AroundRestaurant(request):
-<<<<<<< HEAD
     mylongitude = request.data.get('longitude')
     mylatitude = request.data.get('latitude')
-=======
-    headers = {'Authorization': 'KakaoAK c2f38bb9330b0ea9d3c0b140afee1d73'}  # 자신의 API 키
-    mylongitude = float(request.data.get('longitude'))
-    mylatitude = float(request.data.get('latitude'))
->>>>>>> bffc0b7500849f1da46612ff527624159ee6c36e
 
     tmp = Restaurant.objects.filter(address__contains='')
     serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)

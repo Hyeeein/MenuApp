@@ -103,7 +103,14 @@ def getUserReview(request):
 def postReview(request):
     if request.method == 'POST':
         uid = {"user":request.user.id}
-        datas = dict(request.data, **uid)
+        #datas = dict(request.data, **uid)
+        datas = {"rating" : request.POST['rating'],
+                 "content" : request.POST['content'],
+                 "menu" : request.POST['menu'],
+                 "restaurant" : request.POST['restaurant']}
+        image = {"image":request.FILES['image']}
+        datas.update(uid)
+        datas.update(image)
         serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()

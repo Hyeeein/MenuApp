@@ -40,14 +40,14 @@ menu['feature'] = menu['category'] + " " + menu['name'] + " " + menu['weather'] 
 
 # 추천시스템 함수 작성
 @api_view(['POST'])
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def rcm(request):
 
     global menu, nutrient_menu, restaurant
 
     # user 정보 GET
-    #user_id = request.session.get('user_id')
-    user_id = request.data['user']
+    user_id = request.session.get('user_id')
+    #user_id = request.data['user']
     user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
     user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
     user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기
@@ -66,11 +66,12 @@ def rcm(request):
 
     # 2) 특징 데이터를 사용한 내용 기반 필터링
     menu_feature = menu['feature'].tolist()
-    
-    # TF-IDF Vectorizer Object 구현
-    tfidf = text.TfidfVectorizer(input=menu_feature)
-    tfidf_matrix = tfidf.fit_transform(menu_feature)
 
+    # TF-IDF Vectorizer Object 구현
+    tfidf2 = text.TfidfVectorizer(input=menu_feature)
+    tfidf = text.TfidfVectorizer()
+    tfidf_matrix = tfidf.fit_transform(menu_feature)
+    print(tfidf2)
     # 코사인 유사도 계산
     similarity = cosine_similarity(tfidf_matrix)
 

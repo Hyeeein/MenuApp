@@ -68,10 +68,8 @@ def rcm(request):
     menu_feature = menu['feature'].tolist()
 
     # TF-IDF Vectorizer Object 구현
-    tfidf2 = text.TfidfVectorizer(input=menu_feature)
     tfidf = text.TfidfVectorizer()
     tfidf_matrix = tfidf.fit_transform(menu_feature)
-    print(tfidf2)
     # 코사인 유사도 계산
     similarity = cosine_similarity(tfidf_matrix)
 
@@ -123,7 +121,7 @@ def rcm(request):
     #rcm_list = menu_info
     
     if rcm_list==[]:
-        return Response({"message":"fail"}, status=200)
+        return Response({"message":"fail"}, status=204)
         
 
     choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)

@@ -6,14 +6,20 @@ from .models import *
 class RestaurantSerializer(ModelSerializer):
     rating = serializers.SerializerMethodField()
     favor = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
     
     class Meta:
         model = Restaurant
-        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','favor')
+        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','count','favor')
 
     def get_rating(self, obj):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
         return rating
+
+    def get_count(self, obj):
+        reviews = Review.objects.filter(restaurant=obj.id)
+        count = reviews.count()
+        return count
 
     def get_favor(self, obj):
         user = self.context.get("request").user

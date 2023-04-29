@@ -23,6 +23,22 @@ class RestaurantSerializer(ModelSerializer):
         else:
             return True
 
+class MenuRmcSerializer(ModelSerializer):
+    restaurant_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Menu
+        fields = ('id','name','price','restaurant','restaurant_name','image')
+
+    def get_restaurant_name(self, obj):
+        restaurant_name = Restaurant.objects.get(id=obj.restaurant_id).name
+        return restaurant_name
+
+class MenuImageSerializer(ModelSerializer):    
+    class Meta:
+        model = Menu
+        fields = ('id','image')
+
 class MenuSerializer(ModelSerializer):
     checkallergy = serializers.SerializerMethodField()
     

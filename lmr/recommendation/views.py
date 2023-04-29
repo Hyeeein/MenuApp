@@ -6,12 +6,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 
-from jmc.serializers import MenuRmcSerializer, MenuImageSerializer
 from jmc.models import *
 
 import numpy as np
 import pandas as pd
 import random
+from pytz import timezone
+from datetime import datetime
 
 from sklearn.feature_extraction import text
 from sklearn.metrics.pairwise import cosine_similarity
@@ -31,7 +32,7 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def rcm(request):
 
@@ -39,14 +40,15 @@ def rcm(request):
 
     # user 정보 GET
     user_id = request.session.get('user_id')
-    user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
-    user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
-    user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기
+    #user_id = request.data['user']
+    user_allergy = list(UserAllergy.objects.filter(user_id=5).values())  # 사용자 알러지 정보 불러오기
+    user_prefer = PreferredMenu.objects.filter(user_id=5).values()       # 사용자 위시리스트 정보 불러오기
+    user_log = MenuRecommendLog.objects.filter(user_id=5).values()       # 사용자 추천 로그 불러오기
 
     # 예산, 가격, 날씨 정보 받아오기
-    user_price = int(request.data['price'])
-    user_weather = request.data['weather']
-    user_emotion = request.data['emotion']
+    # user_price = int(request.data['price'])
+    # user_weather = request.data['weather']
+    # user_emotion = request.data['emotion']
 
     ### 메인 기능 : 사용자 선호 메뉴를 중심으로 메뉴 추천 ###
 
@@ -74,10 +76,11 @@ def rcm(request):
     # 메뉴 데이터 특징 피처 만들어서 저장
     menu['feature'] = menu['category'] + " " + menu['name'] + " " + menu['weather'] + " " + menu['emotion'] + " " + tmp_df
     menu_feature = menu['feature'].tolist()
-
+    
     # TF-IDF Vectorizer Object 구현
-    tfidf = text.TfidfVectorizer()
+    tfidf = text.TfidfVectorizer(input=menu_feature)
     tfidf_matrix = tfidf.fit_transform(menu_feature)
+
     # 코사인 유사도 계산
     similarity = cosine_similarity(tfidf_matrix)
 
@@ -85,7 +88,7 @@ def rcm(request):
     indices = pd.Series(menu.index, index=menu.feature).drop_duplicates()
 
     # 사용자 선호 메뉴와 유사한 메뉴 추천 (좋아하는 메뉴만큼 for문 진행)
-    rcm_menu_01 = list()
+    rcm_menu = list()
 
     for i in like_menu_list:
         for j in range(len(menu)):
@@ -101,44 +104,51 @@ def rcm(request):
 
         for k in menu_indices:
             menu_id = menu.iloc[k]['id']
-            rcm_menu_01.append(menu_id)
+            rcm_menu.append(menu_id)
 
     # 3) 사용자 알러지가 있는 메뉴 제외
     allergy_menu = rcm_allergy(user_allergy)  # 사용자 알러지가 있는 메뉴만 불러오기 (아이디 값)
     
     # 위에서 추천된 메뉴 중 해당 메뉴가 있을 경우 제외 (위에 코드 완성되면 추가 수정)
-    rcm_menu_02 = rcm_menu_01  # copy
-
-    for i in rcm_menu_02:
+    for i in rcm_menu:
         for j in allergy_menu:
-            if i == j: rcm_menu_02.remove(i)
+            if i == j: rcm_menu.remove(i)
     
+    # ---------- 구현 해야 함 ----------
+
     # 4) 사용자 예산, 기분, 날씨 반영
-    price_menu = rcm_price(user_price)
-    weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
+    # price_menu = rcm_price(user_price)
+    # weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
 
-    price_weather_emotion = set(price_menu + weather_emotion_menu)
-    price_weather_emotion_list = list(price_weather_emotion)
+    # # price_weather_emotion = set(price_menu + weather_emotion_menu)
+    # price_weather_emotion = set(price_menu) & set(weather_emotion_menu)
+    # price_weather_emotion_list = list(price_weather_emotion)
+
+    # rcm_menu_03 = []
+    # for i in rcm_menu_02:
+    #     for j in price_weather_emotion_list:
+    #         if i == j: rcm_menu_03.append(i)
+
+    # return Response(rcm_menu_03)
+
+    # ---------------------------------
     
-    rcm_menu_03 = []
-    for i in rcm_menu_02:
-        for j in price_weather_emotion_list:
-            if i == j: rcm_menu_03.append(i)
+    # 5) 당일에 추천된 메뉴 제외 (로그 기록 활용)
 
-    return Response(rcm_menu_03)
-    # ----------
-    
-    # 6) 당일에 추천된 메뉴 제외 (로그 기록 활용)
+    # 당일에 추천된 메뉴 아이디 리스트
+    rcm_log_list = rcm_log(user_log)
 
+    for i in rcm_menu:
+        for j in rcm_log_list:
+            if i == j: rcm_menu.remove(i)
 
+    # 6) 최종 추천 메뉴 리스트업
+    rcm_list = list(set(rcm_menu))
 
-    # 7) 최종 추천 메뉴 리스트업
-    rcm_list = menu_info
+    choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
+    choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
 
-    # choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
-    # choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
-
-    # 8) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
+    # 7) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
     for i in range(len(menu)):
         if menu.iloc[i][0] == choice_id: menu_info = menu.iloc[i]
     menu_id = menu_info[0]
@@ -150,19 +160,18 @@ def rcm(request):
         if restaurant.iloc[j][0] == restaurant_id: restaurant_info = restaurant.iloc[j]
     restaurant_name = restaurant_info[1]
 
-    # 9) 추천된 메뉴 반환
+    # 8) 추천된 메뉴 반환
     personal_menu = { "menu_id" : menu_id,
                      "menu_name" : menu_name,
                      "menu_price" : menu_price,
                      "restaurant_id" : restaurant_id,
                      "restaurant_name" : restaurant_name}
 
-    # # # 10) 추천된 메뉴 로그 저장
+    # 9) 추천된 메뉴 로그 저장
 
 
     return Response(personal_menu)
 
-# ---------
 
 # 사용자 정보에서 알러지가 든 메뉴만 리스트업 하는 함수
 def rcm_allergy(user_allergy):
@@ -193,51 +202,62 @@ def rcm_allergy(user_allergy):
 
 
 # 사용자가 선택한 예산 범위의 메뉴 리스트업 하는 함수
-def rcm_price(want_price):
+def rcm_price(user_price):
 
     # 메뉴 리스트에서 해당 예산보다 작은 금액의 메뉴 리스트업
     menu_num = len(menu['id'])
     price_menu_index = []
 
     for i in range(menu_num):
-        if menu.iloc[i]['price'] <= want_price:
-            price_menu_index.append(menu.iloc[i]['id'])
+        if menu.iloc[i]['price'] <= user_price:
+            price_menu_index.append(i)
     
     return price_menu_index
 
 
 # 사용자가 선택한 날씨와 감정을 반영한 메뉴를 리스트업 하는 함수
 def rcm_weather_emotion(user_weather, user_emotion):
-
-    global menu
-
+    
     # 메뉴 리스트에서 해당 날씨, 감정에 해당하는 메뉴 리스트업
     menu_num = len(menu['id'])
     menu_weather_list = []
     menu_emotion_list = []
 
-
-    for menu_n in range(menu_num):
-        weather_list = menu.iloc[menu_n]['weather'].split(',')
-        emotion_list = menu.iloc[menu_n]['emotion'].split(',')
+    for menu in range(menu_num):
+        weather_list = menu.iloc[menu]['weather'].split(',')
+        emotion_list = menu.iloc[menu]['emotion'].split(',')
 
         add_menu = ""
         for weather in weather_list:
-            if weather == user_weather:
-                add_menu = 1
-        if add_menu == 1:
-            menu_weather_list.append(menu.iloc[menu_n]['id'])
+            if weather == user_weather: add_menu = 1
+        if add_menu == 1: menu_weather_list.append(menu)
 
         add_menu2 = ""
         for emotion in emotion_list:
             if emotion == user_emotion: add_menu2 = 1
-        if add_menu2 == 1: menu_emotion_list.append(menu.iloc[menu_n]['id'])
-
+        if add_menu2 == 1: menu_emotion_list.append(menu)
     
     # 사용자가 선택한 날씨, 감정이 겹치는 메뉴 리스트업
     menu_weather_emotion_list = []
     for weather_menu in menu_weather_list:
         for emotion_menu in menu_emotion_list:
             if weather_menu == emotion_menu: menu_weather_emotion_list.append(weather_menu)
-            
+
     return menu_weather_emotion_list
+
+# 사용자 로그 기록을 활용하여 당일 추천된 메뉴 재추천 안되게 하는 함수
+def rcm_log(user_log):
+    
+    today = datetime.now(timezone('Asia/Seoul'))
+    today_new = today.strftime("%Y-%m-%d")  # 오늘 날짜 (2023-04-30)
+
+    # 기존에 추천 받았던 내역 불러오기 (오늘 날짜만)
+    rcm_log = user_log.values()
+    rcm_log_list = list()
+
+    for i in rcm_log:
+        day = i['datetime'].strftime("%Y-%m-%d")
+        if today_new == day:
+            rcm_log_list.append(i['menu_id'])
+    
+    return rcm_log_list

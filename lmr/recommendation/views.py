@@ -167,11 +167,15 @@ def rcm(request):
                      "restaurant_id" : restaurant_id,
                      "restaurant_name" : restaurant_name}
 
+    # ---------- 구현 해야 함 ----------
+
     # 9) 추천된 메뉴 로그 저장
 
+    # ---------------------------------
 
     return Response(personal_menu)
 
+# ---------- 수정 해야 함 ----------
 
 # 사용자 정보에서 알러지가 든 메뉴만 리스트업 하는 함수
 def rcm_allergy(user_allergy):
@@ -200,6 +204,7 @@ def rcm_allergy(user_allergy):
 
     return allergy_menu
 
+# ---------------------------------
 
 # 사용자가 선택한 예산 범위의 메뉴 리스트업 하는 함수
 def rcm_price(user_price):

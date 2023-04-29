@@ -120,6 +120,10 @@ def rcm(request):
     rcm_list = price_weather_emotion_list
     #rcm_list = menu_info
 
+    if rcm_list==[]:
+        return Response({"message":"fail"}, status=200)
+        
+
     choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
     choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
 
@@ -218,18 +222,18 @@ def rcm_weather_emotion(user_weather, user_emotion):
             if weather == user_weather:
                 add_menu = 1
         if add_menu == 1:
-            menu_weather_list.append(menu.iloc[menu_n])
+            menu_weather_list.append(menu.iloc[menu_n]['id'])
 
         add_menu2 = ""
         for emotion in emotion_list:
             if emotion == user_emotion: add_menu2 = 1
-        if add_menu2 == 1: menu_emotion_list.append(menu.iloc[menu_n])
+        if add_menu2 == 1: menu_emotion_list.append(menu.iloc[menu_n]['id'])
 
     
     # 사용자가 선택한 날씨, 감정이 겹치는 메뉴 리스트업
     menu_weather_emotion_list = []
     for weather_menu in menu_weather_list:
         for emotion_menu in menu_emotion_list:
-            if weather_menu['id'] == emotion_menu['id']: menu_weather_emotion_list.append(weather_menu['id'])
-
+            if weather_menu == emotion_menu: menu_weather_emotion_list.append(weather_menu)
+            
     return menu_weather_emotion_list

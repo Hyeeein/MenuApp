@@ -6,14 +6,20 @@ from .models import *
 class RestaurantSerializer(ModelSerializer):
     rating = serializers.SerializerMethodField()
     favor = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
     
     class Meta:
         model = Restaurant
-        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','favor')
+        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','count','favor')
 
     def get_rating(self, obj):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
         return rating
+
+    def get_count(self, obj):
+        reviews = Review.objects.filter(restaurant=obj.id)
+        count = reviews.count()
+        return count
 
     def get_favor(self, obj):
         user = self.context.get("request").user
@@ -22,6 +28,22 @@ class RestaurantSerializer(ModelSerializer):
             return False
         else:
             return True
+
+class MenuRmcSerializer(ModelSerializer):
+    restaurant_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Menu
+        fields = ('id','name','price','restaurant','restaurant_name','image')
+
+    def get_restaurant_name(self, obj):
+        restaurant_name = Restaurant.objects.get(id=obj.restaurant_id).name
+        return restaurant_name
+
+class MenuImageSerializer(ModelSerializer):    
+    class Meta:
+        model = Menu
+        fields = ('id','image')
 
 class MenuSerializer(ModelSerializer):
     checkallergy = serializers.SerializerMethodField()
@@ -160,6 +182,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class AroundRestaurantSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     favor = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -169,6 +192,11 @@ class AroundRestaurantSerializer(serializers.ModelSerializer):
     def get_rating(self, obj):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
         return rating
+
+    def get_count(self, obj):
+        reviews = Review.objects.filter(restaurant=obj.id)
+        count = reviews.count()
+        return count
 
     def get_favor(self, obj):
         user = self.context.get("request").user

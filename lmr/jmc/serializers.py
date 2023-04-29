@@ -182,6 +182,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 class AroundRestaurantSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField()
     favor = serializers.SerializerMethodField()
+    count = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant

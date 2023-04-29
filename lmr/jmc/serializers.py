@@ -192,6 +192,11 @@ class AroundRestaurantSerializer(serializers.ModelSerializer):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']
         return rating
 
+    def get_count(self, obj):
+        reviews = Review.objects.filter(restaurant=obj.id)
+        count = reviews.count()
+        return count
+
     def get_favor(self, obj):
         user = self.context.get("request").user
         favor = Resfav.objects.filter(restaurant=obj.id, user=user.id)

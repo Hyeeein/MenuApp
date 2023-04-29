@@ -28,14 +28,6 @@ menu = pd.DataFrame(list(menu_db.values()))
 nutrient_menu = pd.DataFrame(list(nutrient_db.values()))
 restaurant = pd.DataFrame(list(restaurant_db.values()))
 
-# 메뉴 특징 데이터 생성 및 menu에 컬럼 추가
-# nutrient_menu 데이터의 ingredient 피처를 menu_id 기준으로 정렬
-nutrient_menu = nutrient_menu.sort_values(by=['menu_id'])
-tmp_df = nutrient_menu['ingredient']
-tmp_df = tmp_df.reset_index(drop=True)
-
-# 메뉴 데이터 특징 피처 만들어서 저장
-menu['feature'] = menu['category'] + " " + menu['name'] + " " + menu['weather'] + " " + menu['emotion'] + " " + tmp_df
 
 # 추천시스템 함수 작성
 @api_view(['GET'])
@@ -46,23 +38,41 @@ def rcm(request):
 
     # user 정보 GET
     user_id = request.session.get('user_id')
-    user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
-    user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
-    user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기
+    #user_id = request.data['user']
+    user_allergy = list(UserAllergy.objects.filter(user_id=5).values())  # 사용자 알러지 정보 불러오기
+    user_prefer = PreferredMenu.objects.filter(user_id=5).values()       # 사용자 위시리스트 정보 불러오기
+    user_log = MenuRecommendLog.objects.filter(user_id=5).values()       # 사용자 추천 로그 불러오기
 
     # 예산, 가격, 날씨 정보 받아오기
-    # user_price
-    # user_weather
-    # user_emotion
+    user_price = int(request.data['price'])
+    user_weather = request.data['weather']
+    user_emotion = request.data['emotion']
 
     ### 메인 기능 : 사용자 선호 메뉴를 중심으로 메뉴 추천 ###
-    
-    # 1) 사용자가 좋아하는 메뉴 다 가져오기 (메뉴 아이디만 가져옴)
-    like_menu = list()
-    for menu in user_prefer:
-        like_menu.append(menu['menu_id'])
+
+    # 1) 사용자가 좋아하는 메뉴 다 가져오기
+    like_menu = user_prefer.values()
+    like_menu_list = list() ; dislike_menu_list = list()
+
+    for i in like_menu:
+        # 좋아하는 메뉴
+        if i['preference'] == 1:
+            like_menu_list.append(i['menu_id'])
+
+        # 싫어하는 메뉴
+        elif i['preference'] == -1:
+            dislike_menu_list.append(i['menu_id'])
 
     # 2) 특징 데이터를 사용한 내용 기반 필터링
+
+    # 메뉴 특징 데이터 생성 및 menu에 컬럼 추가
+    # nutrient_menu 데이터의 ingredient 피처를 menu_id 기준으로 정렬
+    nutrient_menu = nutrient_menu.sort_values(by=['menu_id'])
+    tmp_df = nutrient_menu['ingredient']
+    tmp_df = tmp_df.reset_index(drop=True)
+
+    # 메뉴 데이터 특징 피처 만들어서 저장
+    menu['feature'] = menu['category'] + " " + menu['name'] + " " + menu['weather'] + " " + menu['emotion'] + " " + tmp_df
     menu_feature = menu['feature'].tolist()
     
     # TF-IDF Vectorizer Object 구현
@@ -76,100 +86,114 @@ def rcm(request):
     indices = pd.Series(menu.index, index=menu.feature).drop_duplicates()
 
     # 사용자 선호 메뉴와 유사한 메뉴 추천 (좋아하는 메뉴만큼 for문 진행)
-    rcm_menu_01 = []
+    rcm_menu_01 = list()
 
-    for id in like_menu:
-        feature = menu.iloc[id]['feature']
+    for i in like_menu_list:
+        for j in range(len(menu)):
+            if i == j:
+                feature = menu.iloc[j]['feature']
+        
         index = indices[feature]
 
         similarity_scores = list(enumerate(similarity[index]))
         similarity_scores = sorted(similarity_scores, key=lambda x: x[1], reverse=True)
-        similarity_scores = similarity_scores[0:10]       # 결과는 메뉴 아이디, 유사도
-        menu_indices = [i[0] for i in similarity_scores]  # 메뉴 아이디 리스트
+        similarity_scores = similarity_scores[1:11]        # 결과는 메뉴 아이디, 유사도 (10개씩 추출)
+        menu_indices = [i[0] for i in similarity_scores]   # 메뉴 아이디 리스트 (메뉴 아이디는 1로 시작하므로)
 
-        rcm_menu_01.append(menu['id'].iloc[menu_indices])
+        for k in menu_indices:
+            menu_id = menu.iloc[k]['id']
+            rcm_menu_01.append(menu_id)
 
     # 3) 사용자 알러지가 있는 메뉴 제외
-    not_allergy_menu = rcm_allergy(user_allergy)  # 사용자 알러지가 없는 메뉴만 불러오기
+    allergy_menu = rcm_allergy(user_allergy)  # 사용자 알러지가 있는 메뉴만 불러오기 (아이디 값)
+    
+    # 위에서 추천된 메뉴 중 해당 메뉴가 있을 경우 제외 (위에 코드 완성되면 추가 수정)
+    rcm_menu_02 = rcm_menu_01  # copy
 
-    rcm_menu_02 = []
-    for menu in like_menu:
-        for not_allergy in not_allergy_menu:
-            if menu == not_allergy: rcm_menu_02.append(menu)
+    for i in rcm_menu_02:
+        for j in allergy_menu:
+            if i == j: rcm_menu_02.remove(i)
     
     # 4) 사용자 예산, 기분, 날씨 반영
     price_menu = rcm_price(user_price)
     weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
 
-    price_weather_emotion = set(price_menu + weather_emotion_menu)
+    # price_weather_emotion = set(price_menu + weather_emotion_menu)
+    price_weather_emotion = set(price_menu) & set(weather_emotion_menu)
     price_weather_emotion_list = list(price_weather_emotion)
 
     rcm_menu_03 = []
-    for menu in rcm_menu_02:
-        for info in price_weather_emotion_list:
-            if menu == info: rcm_menu_03.append(menu)
+    for i in rcm_menu_02:
+        for j in price_weather_emotion_list:
+            if i == j: rcm_menu_03.append(i)
 
+    return Response(rcm_menu_03)
+    # ----------
+    
     # 6) 당일에 추천된 메뉴 제외 (로그 기록 활용)
 
 
 
-    # 7) 최종 추천 메뉴 리스트업
-    rcm_list = menu_info
+    # ----------
 
-    choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
-    choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
+    # # 7) 최종 추천 메뉴 리스트업
+    # rcm_list = menu_info
 
-    # 8) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
-    for i in range(len(menu)):
-        if menu.iloc[i][0] == choice_id: menu_info = menu.iloc[i]
-    menu_id = menu_info[0]
-    menu_name = menu_info[3]
-    menu_price = menu_info[4]
-    restaurant_id = menu_info[1]
+    # choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
+    # choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
 
-    for j in range(len(restaurant)):
-        if restaurant.iloc[j][0] == restaurant_id: restaurant_info = restaurant.iloc[j]
-    restaurant_name = restaurant_info[1]
+    # # 8) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
+    # for i in range(len(menu)):
+    #     if menu.iloc[i][0] == choice_id: menu_info = menu.iloc[i]
+    # menu_id = menu_info[0]
+    # menu_name = menu_info[3]
+    # menu_price = menu_info[4]
+    # restaurant_id = menu_info[1]
 
-    # 9) 추천된 메뉴 반환
-    personal_menu = { "menu_id" : menu_id,
-                     "menu_name" : menu_name,
-                     "menu_price" : menu_price,
-                     "restaurant_id" : restaurant_id,
-                     "restaurant_name" : restaurant_name}
+    # for j in range(len(restaurant)):
+    #     if restaurant.iloc[j][0] == restaurant_id: restaurant_info = restaurant.iloc[j]
+    # restaurant_name = restaurant_info[1]
 
-    # # 10) 추천된 메뉴 로그 저장
+    # # 9) 추천된 메뉴 반환
+    # personal_menu = { "menu_id" : menu_id,
+    #                  "menu_name" : menu_name,
+    #                  "menu_price" : menu_price,
+    #                  "restaurant_id" : restaurant_id,
+    #                  "restaurant_name" : restaurant_name}
+
+    # # # 10) 추천된 메뉴 로그 저장
 
 
-    return Response(personal_menu)
+    # return Response(personal_menu)
 
+# ---------
 
-# 사용자 정보에서 알러지 메뉴를 제외한 메뉴 리스트업 하는 함수
+# 사용자 정보에서 알러지가 든 메뉴만 리스트업 하는 함수
 def rcm_allergy(user_allergy):
 
-    allergy_list = list(user_allergy) # 알러리 종류
-    personal_allergy_list = []        # 유저별 알러지 임시로 담아둘 리스트
+    allergy_list = ['달걀', '우유', '밀', '콩', '땅콩', '생선', '고기', '조개', '갑각류']
+    user_allergy_list = list(user_allergy[0].values())  # 앞에 id와 user_id 포함
+    user_allergy_list_name = []                         # 유저별 알러지 임시로 담아둘 리스트
 
     # 알러지에 해당하는 음식 리스트 추가
-    for i in range(len(allergy_list)):
-        if user_allergy[i] == '1':
-            personal_allergy_list.append(allergy_list[i])
+    for i in range(2, len(user_allergy_list)):
+        if user_allergy_list[i] == '1':
+            user_allergy_list_name.append(allergy_list[i-2])
     
-    # nutrient 파일에서 해당 알러지가 없는 메뉴 리스트업
-    not_allergy_menu = []
+    # nutrient 파일에서 해당 알러지가 있는 메뉴 리스트업 (nutrient_menu는 메뉴 아이디 순서로 정렬되어 있음)
+    allergy_menu = []
 
     for i in range(len(nutrient_menu)):
         allergy = str(nutrient_menu.iloc[i]['allergy'])
-        allergy_list = allergy.split(',0')
+        allergy_info = allergy.split(',')
 
-        # 해당 알러지가 있는 메뉴를 제외한 메뉴 인덱스 리스트업
+        # 해당 알러지가 있는 메뉴 인덱스 리스트업
         add_menu = ''
-        for j in allergy_list:
-            if j not in personal_allergy_list: add_menu = 1
-        if add_menu == 1: not_allergy_menu.append(i)
+        for j in user_allergy_list_name:
+            if j in allergy_info: add_menu = 1
+        if add_menu == 1: allergy_menu.append(nutrient_menu.iloc[i]['menu_id'])
 
-    # return not_allergy_menu
-    return allergy_list
+    return allergy_menu
 
 
 # 사용자가 선택한 예산 범위의 메뉴 리스트업 하는 함수

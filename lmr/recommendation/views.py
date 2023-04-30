@@ -40,8 +40,8 @@ def rcm(request):
     global menu, nutrient_menu, restaurant
 
     # user 정보 GET
-    # user_id = 5
-    user_id = request.session.get('user_id')
+    user_id = 5
+    # user_id = request.session.get('user_id')
     # user_id = request.data['user']
     user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
     user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
@@ -51,7 +51,7 @@ def rcm(request):
     # user_price = int(request.data['price'])
     # user_weather = request.data['weather']
     # user_emotion = request.data['emotion']
-    user_price = 6500
+    user_price = 3000
     user_weather = '맑음'
     user_emotion = '기쁨'
 

@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 
 from jmc.models import *
+import requests
 
 import numpy as np
 import pandas as pd
@@ -32,23 +33,27 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def rcm(request):
 
     global menu, nutrient_menu, restaurant
 
     # user 정보 GET
+    # user_id = 5
     user_id = request.session.get('user_id')
-    #user_id = request.data['user']
-    user_allergy = list(UserAllergy.objects.filter(user_id=5).values())  # 사용자 알러지 정보 불러오기
-    user_prefer = PreferredMenu.objects.filter(user_id=5).values()       # 사용자 위시리스트 정보 불러오기
-    user_log = MenuRecommendLog.objects.filter(user_id=5).values()       # 사용자 추천 로그 불러오기
+    # user_id = request.data['user']
+    user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
+    user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
+    user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기
 
     # 예산, 가격, 날씨 정보 받아오기
     # user_price = int(request.data['price'])
     # user_weather = request.data['weather']
     # user_emotion = request.data['emotion']
+    user_price = 6500
+    user_weather = '맑음'
+    user_emotion = '기쁨'
 
     ### 메인 기능 : 사용자 선호 메뉴를 중심으로 메뉴 추천 ###
 
@@ -113,27 +118,8 @@ def rcm(request):
     for i in rcm_menu:
         for j in allergy_menu:
             if i == j: rcm_menu.remove(i)
-    
-    # ---------- 구현 해야 함 ----------
 
-    # 4) 사용자 예산, 기분, 날씨 반영
-    # price_menu = rcm_price(user_price)
-    # weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
-
-    # # price_weather_emotion = set(price_menu + weather_emotion_menu)
-    # price_weather_emotion = set(price_menu) & set(weather_emotion_menu)
-    # price_weather_emotion_list = list(price_weather_emotion)
-
-    # rcm_menu_03 = []
-    # for i in rcm_menu_02:
-    #     for j in price_weather_emotion_list:
-    #         if i == j: rcm_menu_03.append(i)
-
-    # return Response(rcm_menu_03)
-
-    # ---------------------------------
-    
-    # 5) 당일에 추천된 메뉴 제외 (로그 기록 활용)
+    # 4) 당일에 추천된 메뉴 제외 (로그 기록 활용)
 
     # 당일에 추천된 메뉴 아이디 리스트
     rcm_log_list = rcm_log(user_log)
@@ -142,9 +128,28 @@ def rcm(request):
         for j in rcm_log_list:
             if i == j: rcm_menu.remove(i)
 
-    # 6) 최종 추천 메뉴 리스트업
-    rcm_list = list(set(rcm_menu))
+    # 5) 사용자 예산, 기분, 날씨 반영
+    price_menu = rcm_price(user_price)
+    weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
 
+    # price_weather_emotion = set(price_menu + weather_emotion_menu)
+    price_weather_emotion = set(price_menu) & set(weather_emotion_menu)
+    price_weather_emotion_list = list(price_weather_emotion)
+
+    rcm_menu_new = list()
+    for i in rcm_menu:
+        for j in price_weather_emotion_list:
+            if i == j: rcm_menu_new.append(i)
+
+    # 6) 최종 추천 메뉴 리스트업
+    rcm_list = list(set(rcm_menu_new))
+
+    # 추천할 메뉴 리스트가 없는 경우
+    if len(rcm_list) == 0:
+        fail_msg = "사용자 정보가 부족합니다"
+        return Response (fail_msg)
+
+    # 추천할 메뉴 리스트가 있는 경우
     choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
     choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
 
@@ -167,15 +172,19 @@ def rcm(request):
                      "restaurant_id" : restaurant_id,
                      "restaurant_name" : restaurant_name}
 
-    # ---------- 구현 해야 함 ----------
-
     # 9) 추천된 메뉴 로그 저장
+    id_tmp = MenuRecommendLog.objects.values()
+    id_tmp_2 = len(id_tmp)
 
-    # ---------------------------------
+    MenuRecommendLog.objects.create(
+        id =  id_tmp_2 + 1,
+        datetime = datetime.now(timezone('Asia/Seoul')),
+        menu_id = personal_menu.get('menu_id'),
+        user_id = user_id
+    ).save()
 
     return Response(personal_menu)
 
-# ---------- 수정 해야 함 ----------
 
 # 사용자 정보에서 알러지가 든 메뉴만 리스트업 하는 함수
 def rcm_allergy(user_allergy):
@@ -204,8 +213,6 @@ def rcm_allergy(user_allergy):
 
     return allergy_menu
 
-# ---------------------------------
-
 # 사용자가 선택한 예산 범위의 메뉴 리스트업 하는 함수
 def rcm_price(user_price):
 
@@ -219,28 +226,29 @@ def rcm_price(user_price):
     
     return price_menu_index
 
-
 # 사용자가 선택한 날씨와 감정을 반영한 메뉴를 리스트업 하는 함수
 def rcm_weather_emotion(user_weather, user_emotion):
+
+    global menu
     
     # 메뉴 리스트에서 해당 날씨, 감정에 해당하는 메뉴 리스트업
-    menu_num = len(menu['id'])
+    menu_num = len(menu)
     menu_weather_list = []
     menu_emotion_list = []
 
-    for menu in range(menu_num):
-        weather_list = menu.iloc[menu]['weather'].split(',')
-        emotion_list = menu.iloc[menu]['emotion'].split(',')
+    for i in range(menu_num):
+        weather_list = menu.iloc[i]['weather'].split(',')
+        emotion_list = menu.iloc[i]['emotion'].split(',')
 
         add_menu = ""
         for weather in weather_list:
             if weather == user_weather: add_menu = 1
-        if add_menu == 1: menu_weather_list.append(menu)
+        if add_menu == 1: menu_weather_list.append(menu.iloc[i]['id'])
 
         add_menu2 = ""
         for emotion in emotion_list:
             if emotion == user_emotion: add_menu2 = 1
-        if add_menu2 == 1: menu_emotion_list.append(menu)
+        if add_menu2 == 1: menu_emotion_list.append(menu.iloc[i]['id'])
     
     # 사용자가 선택한 날씨, 감정이 겹치는 메뉴 리스트업
     menu_weather_emotion_list = []

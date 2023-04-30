@@ -185,7 +185,6 @@ def rcm(request):
 
     return Response(personal_menu)
 
-
 # 사용자 정보에서 알러지가 든 메뉴만 리스트업 하는 함수
 def rcm_allergy(user_allergy):
 

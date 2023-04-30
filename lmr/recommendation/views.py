@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Max
 
+from jmc.serializers import MenuRmcSerializer, MenuImageSerializer
 from jmc.models import *
 import requests
 
@@ -33,27 +34,22 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def rcm(request):
 
     global menu, nutrient_menu, restaurant
 
     # user 정보 GET
-    user_id = 5
-    # user_id = request.session.get('user_id')
-    # user_id = request.data['user']
+    user_id = request.user.id
     user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
     user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
     user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기
 
     # 예산, 가격, 날씨 정보 받아오기
-    # user_price = int(request.data['price'])
-    # user_weather = request.data['weather']
-    # user_emotion = request.data['emotion']
-    user_price = 3000
-    user_weather = '맑음'
-    user_emotion = '기쁨'
+    user_price = int(request.data['price'])
+    user_weather = request.data['weather']
+    user_emotion = request.data['emotion']
 
     ### 메인 기능 : 사용자 선호 메뉴를 중심으로 메뉴 추천 ###
 
@@ -83,7 +79,7 @@ def rcm(request):
     menu_feature = menu['feature'].tolist()
     
     # TF-IDF Vectorizer Object 구현
-    tfidf = text.TfidfVectorizer(input=menu_feature)
+    tfidf = text.TfidfVectorizer()
     tfidf_matrix = tfidf.fit_transform(menu_feature)
 
     # 코사인 유사도 계산
@@ -113,26 +109,34 @@ def rcm(request):
 
     # 3) 사용자 알러지가 있는 메뉴 제외
     allergy_menu = rcm_allergy(user_allergy)  # 사용자 알러지가 있는 메뉴만 불러오기 (아이디 값)
-    
+
     # 위에서 추천된 메뉴 중 해당 메뉴가 있을 경우 제외 (위에 코드 완성되면 추가 수정)
+    '''
     for i in rcm_menu:
         for j in allergy_menu:
-            if i == j: rcm_menu.remove(i)
-
+            if i == j:
+                rcm_menu.remove(i)
+    '''
+    rcm_menu = list(set(rcm_menu) - set(allergy_menu))
+    
     # 4) 당일에 추천된 메뉴 제외 (로그 기록 활용)
 
     # 당일에 추천된 메뉴 아이디 리스트
     rcm_log_list = rcm_log(user_log)
-
+    
+    '''
     for i in rcm_menu:
+        print(i)
         for j in rcm_log_list:
-            if i == j: rcm_menu.remove(i)
-
+            if i == j:
+                rcm_menu.remove(i)
+    '''
+    rcm_menu = list(set(rcm_menu) - set(rcm_log_list))
+    
     # 5) 사용자 예산, 기분, 날씨 반영
     price_menu = rcm_price(user_price)
-    weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)
+    weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)   
 
-    # price_weather_emotion = set(price_menu + weather_emotion_menu)
     price_weather_emotion = set(price_menu) & set(weather_emotion_menu)
     price_weather_emotion_list = list(price_weather_emotion)
 
@@ -146,7 +150,7 @@ def rcm(request):
 
     # 추천할 메뉴 리스트가 없는 경우
     if len(rcm_list) == 0:
-        fail_msg = "사용자 정보가 부족합니다"
+        fail_msg = {"message":"오늘 더 이상 추천할 메뉴가 없습니다"}
         return Response (fail_msg)
 
     # 추천할 메뉴 리스트가 있는 경우
@@ -166,11 +170,15 @@ def rcm(request):
     restaurant_name = restaurant_info[1]
 
     # 8) 추천된 메뉴 반환
+    menudata = Menu.objects.filter(id=menu_id)
+    serializer = MenuImageSerializer(menudata, many=True)
+    
     personal_menu = { "menu_id" : menu_id,
                      "menu_name" : menu_name,
                      "menu_price" : menu_price,
                      "restaurant_id" : restaurant_id,
-                     "restaurant_name" : restaurant_name}
+                     "restaurant_name" : restaurant_name,
+                      "image": serializer.data[0]['image']}
 
     # 9) 추천된 메뉴 로그 저장
     id_tmp = MenuRecommendLog.objects.values()
@@ -208,7 +216,8 @@ def rcm_allergy(user_allergy):
         add_menu = ''
         for j in user_allergy_list_name:
             if j in allergy_info: add_menu = 1
-        if add_menu == 1: allergy_menu.append(nutrient_menu.iloc[i]['menu_id'])
+        if add_menu == 1 and not(np.isnan(nutrient_menu.iloc[i]['menu_id'])):
+            allergy_menu.append(nutrient_menu.iloc[i]['menu_id'])
 
     return allergy_menu
 

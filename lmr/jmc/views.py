@@ -12,6 +12,8 @@ from math import radians, sin, cos, sqrt, atan2
 
 def distance(lat1, lon1, lat2, lon2):
     R = 6371 # 지구의 반경 (km)
+    lat1 = float(lat1)
+    lon1 = float(lon1)
     dLat = radians(lat2 - lat1)
     dLon = radians(lon2 - lon1)
     lat1 = radians(lat1)
@@ -172,6 +174,7 @@ def MypageView(request):
     if request.method == 'GET':
         tmp = User.objects.get(id=request.user.id)
         return Response({
+            "id":request.user.id,
             "nickname":tmp.nickname,
             "email":tmp.email,
             "introduction":tmp.introduction,

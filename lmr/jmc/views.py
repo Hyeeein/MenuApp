@@ -174,6 +174,7 @@ def MypageView(request):
     if request.method == 'GET':
         tmp = User.objects.get(id=request.user.id)
         return Response({
+            "id":request.user.id,
             "nickname":tmp.nickname,
             "email":tmp.email,
             "introduction":tmp.introduction,

@@ -12,8 +12,8 @@ from math import radians, sin, cos, sqrt, atan2
 
 def distance(lat1, lon1, lat2, lon2):
     R = 6371 # 지구의 반경 (km)
-    lat1 = float(lat1)
-    lon1 = float(lon1)
+    #lat1 = float(lat1)
+    #lon1 = float(lon1)
     dLat = radians(lat2 - lat1)
     dLon = radians(lon2 - lon1)
     lat1 = radians(lat1)
@@ -220,6 +220,9 @@ def AddressView(request):
 def AroundRestaurant(request):
     mylongitude = request.data.get('longitude')
     mylatitude = request.data.get('latitude')
+    mylongitude = float(mylongitude)
+    mylatitude = float(mylatitude)
+
 
     tmp = Restaurant.objects.filter(address__contains='')
     serializer = AroundRestaurantSerializer(tmp, context={'request': request}, many=True)

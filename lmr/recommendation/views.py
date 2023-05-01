@@ -34,7 +34,7 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 
 # 추천시스템 함수 작성
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def rcm(request):
 
@@ -133,7 +133,10 @@ def rcm(request):
     '''
     rcm_menu = list(set(rcm_menu) - set(rcm_log_list))
     
-    # 5) 사용자 예산, 기분, 날씨 반영
+    # 5) 사용자가 선호하지 않은 메뉴 제외
+    rcm_menu = list(set(rcm_menu) - set(dislike_menu_list))
+
+    # 6) 사용자 예산, 기분, 날씨 반영
     price_menu = rcm_price(user_price)
     weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)   
 
@@ -145,7 +148,7 @@ def rcm(request):
         for j in price_weather_emotion_list:
             if i == j: rcm_menu_new.append(i)
 
-    # 6) 최종 추천 메뉴 리스트업
+    # 7) 최종 추천 메뉴 리스트업
     rcm_list = list(set(rcm_menu_new))
 
     # 추천할 메뉴 리스트가 없는 경우
@@ -157,7 +160,7 @@ def rcm(request):
     choice = random.randrange(0, len(rcm_list)) # 메뉴 리스트 중 한 가지 랜덤 선택 후 추천 (로그 구현 안되면 5개 보내주기)
     choice_id = rcm_list[choice]                # 선택된 메뉴의 메뉴 아이디 출력
 
-    # 7) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
+    # 8) 추천된 메뉴 요약 및 음식점 정보 추가 후 전달
     for i in range(len(menu)):
         if menu.iloc[i][0] == choice_id: menu_info = menu.iloc[i]
     menu_id = menu_info[0]
@@ -169,7 +172,7 @@ def rcm(request):
         if restaurant.iloc[j][0] == restaurant_id: restaurant_info = restaurant.iloc[j]
     restaurant_name = restaurant_info[1]
 
-    # 8) 추천된 메뉴 반환
+    # 9) 추천된 메뉴 반환
     menudata = Menu.objects.filter(id=menu_id)
     serializer = MenuImageSerializer(menudata, many=True)
     
@@ -180,7 +183,7 @@ def rcm(request):
                      "restaurant_name" : restaurant_name,
                       "image": serializer.data[0]['image']}
 
-    # 9) 추천된 메뉴 로그 저장
+    # 10) 추천된 메뉴 로그 저장
     id_tmp = MenuRecommendLog.objects.values()
     id_tmp_2 = len(id_tmp)
 

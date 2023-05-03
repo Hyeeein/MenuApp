@@ -94,7 +94,7 @@ def rcm(request):
 
     for i in like_menu_list:
         for j in range(len(menu)):
-            if i == j:
+            if i == menu.iloc[j]['id']:
                 feature = menu.iloc[j]['feature']
         
         index = indices[feature]

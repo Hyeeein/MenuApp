@@ -35,13 +35,14 @@ restaurant = pd.DataFrame(list(restaurant_db.values()))
 
 # 추천시스템 함수 작성
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def rcm(request):
 
     global menu, nutrient_menu, restaurant
 
     # user 정보 GET
-    user_id = request.user.id
+    #user_id = request.user.id
+    user_id = 44
     user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
     user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
     user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기

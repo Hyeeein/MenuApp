@@ -136,6 +136,7 @@ def rcm(request):
     # 5) 사용자가 선호하지 않은 메뉴 제외
     rcm_menu = list(set(rcm_menu) - set(dislike_menu_list))
 
+
     # 6) 사용자 예산, 기분, 날씨 반영
     price_menu = rcm_price(user_price)
     weather_emotion_menu = rcm_weather_emotion(user_weather, user_emotion)   

@@ -27,7 +27,7 @@ class Menu(models.Model):
 class MenuRecommendLog(models.Model):
     id = models.IntegerField(primary_key=True)
     datetime = models.DateTimeField(blank=True, null=True)
-    user = models.ForeignKey('User', models.DO_NOTHING)
+    user = models.ForeignKey('User', models.CASCADE)
     menu = models.ForeignKey(Menu, models.DO_NOTHING)
 
     class Meta:

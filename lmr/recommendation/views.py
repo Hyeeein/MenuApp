@@ -42,7 +42,7 @@ def rcm(request):
 
     # user 정보 GET
     #user_id = request.user.id
-    user_id =44
+    user_id = request.data['user']
     user_allergy = list(UserAllergy.objects.filter(user_id=user_id).values())  # 사용자 알러지 정보 불러오기
     user_prefer = PreferredMenu.objects.filter(user_id=user_id).values()       # 사용자 위시리스트 정보 불러오기
     user_log = MenuRecommendLog.objects.filter(user_id=user_id).values()       # 사용자 추천 로그 불러오기

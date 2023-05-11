@@ -158,7 +158,7 @@ def getMenuPreference(request, n):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def getAllMenuPreference(request):
     datas = Menu.objects.all()
     serializer = AllMenuPreSerializer(datas, context={'request': request}, many=True)

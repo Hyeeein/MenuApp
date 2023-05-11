@@ -155,7 +155,6 @@ class UserAllergySerializer(ModelSerializer):
         fields = '__all__'
 
 class MenuPreSerializer(ModelSerializer):
-    
     class Meta:
         model = Menu
         fields = ('id','name','image')
@@ -170,7 +169,8 @@ class AllMenuPreSerializer(ModelSerializer):
     def get_preference(self, obj):
         pre = PreferredMenu.objects.all()
         user = self.context.get("request").user
-        prefer = pre.filter(user=user.id, menu=obj.id).first()
+        #prefer = pre.filter(user=user.id, menu=obj.id).first()
+        prefer = pre.filter(user=56, menu=obj.id).first()
         if prefer is None:
             return -2
         preference = pre.preference

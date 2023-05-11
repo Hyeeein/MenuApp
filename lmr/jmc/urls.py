@@ -12,6 +12,7 @@ urlpatterns = [
     path('review/user', views.getUserReview), # 사용자가 작성한 리뷰 조회 url
     path('review/delete/<int:id>', views.deleteReview), # 리뷰 삭제 url
     path('preference/<int:n>', views.getMenuPreference),
+    path('preference/all', views.getAllMenuPreference),
     path('preference/update', views.postMenuPreference),
     #마이페이지url#
     path('mypage', views.MypageView), # 내 정보 수정에서 사용자 정보(이메일, 한줄소개, 닉네임) 조회 url

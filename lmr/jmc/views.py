@@ -137,25 +137,31 @@ def deleteReview(request, id):
 def getMenuPreference(request, n):
     menuobj = Menu.objects.all()
     max_id = menuobj.aggregate(max_id=Max("id"))['max_id']
-    mc= menuobj.count()
-    if n > mc:
-        n = mc
-    elif n >= 1 and n <= mc:
+    if n > 50:
+        n = 50
+    elif n >= 1 and n <= 50:
         pass
     else:
         n = 50
-    random.seed(request.user.id)
+    #random.seed(request.user.id)
     pk = random.sample(range(1, max_id+1),max_id)
     menu = Menu.objects.none()
     c = 0
     i = 0
     while c < n:
-        menu = menu.union(Menu.objects.filter(id=pk[i]))
-        if Menu.objects.filter(id=pk[i]).first()!=None:
+        menu = menu.union(menuobj.filter(id=pk[i]))
+        if menuobj.filter(id=pk[i]).exists():
             c+=1
         i+=1
     datas = menu
     serializer = MenuPreSerializer(datas, context={'request': request}, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getAllMenuPreference(request):
+    datas = Menu.objects.all()
+    serializer = AllMenuPreSerializer(datas, context={'request': request}, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])

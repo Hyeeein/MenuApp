@@ -173,7 +173,7 @@ class AllMenuPreSerializer(ModelSerializer):
         prefer = pre.filter(user=56, menu=obj.id).first()
         if prefer is None:
             return -2
-        preference = pre.preference
+        preference = prefer.preference
         return preference
 
 class PreMenuSerializer(ModelSerializer):

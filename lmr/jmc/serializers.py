@@ -10,7 +10,7 @@ class RestaurantSerializer(ModelSerializer):
     
     class Meta:
         model = Restaurant
-        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','count','favor')
+        fields = ('id','name','address','business_hours','phone_number','category_name','image','rating','count','favor','longitude','latitude')
 
     def get_rating(self, obj):
         rating = Review.objects.filter(restaurant=obj.id).aggregate(Avg('rating'))['rating__avg']

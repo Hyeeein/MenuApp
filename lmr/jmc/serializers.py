@@ -157,7 +157,7 @@ class UserAllergySerializer(ModelSerializer):
 class MenuPreSerializer(ModelSerializer):
     class Meta:
         model = Menu
-        fields = ('id','name','preference','image')
+        fields = ('id','name','image')
 
 class AllMenuPreSerializer(ModelSerializer):
     preference = serializers.SerializerMethodField()

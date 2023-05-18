@@ -116,18 +116,18 @@ def postReview(request):
         serializer = ReviewPostSerializer(data=datas)
         if serializer.is_valid():
             serializer.save()
+            # 리뷰 작성 시 선호메뉴 데이터 추가
+            reviewMenu(request.user.id, datas)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        # 리뷰 작성 시 선호메뉴 데이터 추가
-        reviewMenu(uid, datas)
-        return Response(serializer.errors, status=400)
+
 
 # 작성된 리뷰를 가져와 선호, 비선호 메뉴에 추가하는 함수
 def reviewMenu(uid, datas):
-    
+
     user_id = uid
     menu_id = datas.get('menu')
     content = datas.get('content')
-    
+
     # 키워드로 입력한 단어
     a = "최고예요!"     # 긍정 1
     b = "낫배드"        # 보통 0
@@ -135,23 +135,24 @@ def reviewMenu(uid, datas):
     d = "빨리 나와요"   # 긍정 1
     e = "갓성비!"       # 긍정 1
 
-    # 선호하는지 값 저장
-    preference = ""
+    preference = 0
+    right = False
 
-    # 긍정 단어가 포함되면 PreferredMenu에 추가
-    id_tmp = MenuRecommendLog.objects.values()
-    id_tmp_2 = len(id_tmp)
-
-    if (a in content) or (d in content) or (e in content): preference = 1
-    if (b in content): preference = 0
-    if (c in content): preference = -1
+    # content에 a,b,c,d,e가 존재하면 preferredMenu DB에 저장하도록 바꿀 수 있는 권리(right)를 줌
+    if a in content or d in content or e in content:
+        preference = 1
+        right = True
+    elif b in content:
+        preference = 0
+        right = True
+    elif c in content:
+        preference = -1
+        right = True
     
-    PreferredMenu.objects.create(
-        id = id_tmp_2 + 1,
-        prference = preference,
-        menu_id = menu_id,
-        user_id = user_id
-    ).save()
+    # 권리가 있으면 DB에 선호도를 저장
+    if right == True:
+        PreferredMenu.objects.create(user_id=user_id, menu_id=menu_id, preference=preference)
+
 
 @api_view(['DELETE']) # 리뷰 삭제 로직
 @permission_classes([IsAuthenticated])

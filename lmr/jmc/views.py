@@ -110,7 +110,7 @@ def postReview(request):
                  "content" : request.POST['content'],
                  "menu" : request.POST['menu'],
                  "restaurant" : request.POST['restaurant']}
-        image = {"image" : request.FILES['image']}
+        image = {"image":request.FILES['image']}
         datas.update(uid)
         datas.update(image)
         serializer = ReviewPostSerializer(data=datas)
@@ -119,20 +119,11 @@ def postReview(request):
             # 리뷰 작성 시 선호메뉴 데이터 추가
             reviewMenu(request.user.id, datas)
             return Response(serializer.data, status=status.HTTP_200_OK)
-<<<<<<< HEAD
 
 
 # 작성된 리뷰를 가져와 선호, 비선호 메뉴에 추가하는 함수
 def reviewMenu(uid, datas):
 
-=======
-        # 리뷰 작성 시 선호메뉴 데이터 추가
-        # reviewMenu(uid, datas)
-        return Response(serializer.errors, status=400)
-
-# 작성된 리뷰를 가져와 선호, 비선호 메뉴에 추가하는 함수
-def reviewMenu(uid, datas):
->>>>>>> 67cd4326d584cfda05d9a8a5869822d65b7b5724
     user_id = uid
     menu_id = datas.get('menu')
     content = datas.get('content')

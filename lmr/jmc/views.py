@@ -136,21 +136,17 @@ def reviewMenu(uid, datas):
     e = "갓성비!"       # 긍정 1
 
     preference = 0
-    right = False
 
     # content에 a,b,c,d,e가 존재하면 preferredMenu DB에 저장하도록 바꿀 수 있는 권리(right)를 줌
     if a in content or d in content or e in content:
         preference = 1
-        right = True
     elif b in content:
         preference = 0
-        right = True
     elif c in content:
         preference = -1
-        right = True
     
     # 권리가 있으면 DB에 선호도를 저장
-    if right == True:
+    if PreferredMenu.objects.filter(user_id=user_id, menu_id=menu_id).first() == None:
         PreferredMenu.objects.create(user_id=user_id, menu_id=menu_id, preference=preference)
 
 

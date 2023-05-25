@@ -190,8 +190,7 @@ def rcm(request):
     id_tmp_2 = len(id_tmp)
 
     MenuRecommendLog.objects.create(
-        id =  id_tmp_2 + 1,
-        datetime = datetime.now(timezone('Asia/Seoul')),
+        datetime = datetime.now(timezone('Asia/Seoul'))
         menu_id = personal_menu.get('menu_id'),
         user_id = user_id
     ).save()

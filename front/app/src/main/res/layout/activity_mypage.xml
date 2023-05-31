@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6F6F6"
     tools:context=".MypageActivity">
 
     <View
@@ -13,32 +14,34 @@
         android:layout_height="100dp"
         android:background="#faf4c0" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="마이페이지"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_gravity="center_horizontal"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"/>
 
-
-        <TextView
-            android:id="@+id/txt_join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="35dp"
-            android:text="마이페이지"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:textColor="#584B00" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@drawable/listview_item_border"
+            android:padding="13dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginTop="100dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -51,7 +54,7 @@
                 android:padding="2dp"/>
 
             <LinearLayout
-                android:layout_width="180dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginLeft="20dp">
@@ -60,10 +63,9 @@
                     android:id="@+id/name_mypage"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
                     android:text="닉네임"
                     android:textColor="@color/black"
-                    android:textSize="20dp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -71,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="한 줄의 자기소개"
-                    android:textSize="15sp" />
+                    android:textSize="20dp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -79,27 +81,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="#EAEAEA" />
 
             <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp">
-
+                android:layout_width="match_parent"
+                android:background="@drawable/listview_item_border"
+                android:padding="13dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_mypage2"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/heart" />
+                    android:src="@drawable/favorite_fill0_wght400_grad0_opsz40" />
 
                 <TextView
                     android:id="@+id/txt_btn_wish"
@@ -110,33 +109,26 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="가고 싶은 음식점"
-                    android:textColor="#363636"
-                    android:textSize="17sp" />
+                    android:textColor="@color/black"
+                    android:textSize="22dp" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:background="@drawable/listview_item_border"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
                 android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_mypage4"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/settings_alt" />
+                    android:src="@drawable/settings_suggest_fill0_wght400_grad0_opsz40" />
 
                 <TextView
                     android:id="@+id/txt_btn_setting"
@@ -147,28 +139,53 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="내 정보 수정"
-                    android:textColor="#363636"
-                    android:textSize="17sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="22dp"  />
 
             </LinearLayout>
 
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="#EAEAEA" />
+                android:background="@drawable/listview_item_border"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="55dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/edit_square_fill0_wght400_grad0_opsz40" />
+
+                <TextView
+                    android:id="@+id/mypage_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="리뷰 관리"
+                    android:textColor="@color/black"
+                    android:textSize="22dp"  />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:background="@drawable/listview_item_border"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
                 android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_mypage5"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logout" />
+                    android:src="@drawable/logout_fill0_wght400_grad0_opsz40" />
 
                 <TextView
                     android:id="@+id/txt_btn_logout"
@@ -179,33 +196,26 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="로그아웃"
-                    android:textColor="#363636"
-                    android:textSize="17sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="22dp"  />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
+                android:background="@drawable/listview_item_border"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
                 android:layout_height="55dp"
-                android:orientation="horizontal"
-                android:layout_marginLeft="30dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/img_mypage6"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logout" />
+                    android:background="@color/white"
+                    android:src="@drawable/person_off_fill0_wght400_grad0_opsz40" />
 
                 <TextView
                     android:id="@+id/txt_btn_delete"
@@ -216,27 +226,38 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:text="계정 삭제하기"
-                    android:textColor="#363636"
-                    android:textSize="17sp"/>
+                    android:textColor="@color/black"
+                    android:textSize="22dp"  />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="#EAEAEA"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/home_48px" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/bappool_mypage" />
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

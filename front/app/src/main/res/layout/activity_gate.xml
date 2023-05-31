@@ -5,76 +5,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#faf4c0"
+    android:background="@drawable/background"
     tools:context=".GateActivity">
 
+
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.55"
+        app:layout_constraintVertical_bias="0.65"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
-            android:id="@+id/img_gate_2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="2dp"
-            android:src="@drawable/fork_knife_2_5" />
+            android:layout_width="300dp"
+            android:layout_height="170dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/gate_2" />
 
-        <TextView
-            android:id="@+id/txt_gate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text=" 음식 고르기 힘들 때는? "
-            android:textColor="#7C6F00"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txt_gate2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text=" 점메추 "
-            android:textColor="#584B00"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/character" />
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal" >
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_gate"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="로그인"
-                android:textColor="#584B00"
-                android:textStyle="bold"
-                android:backgroundTint="#faf4c0">
+                android:elevation="3dp"
+                android:textSize="20dp"
+                android:background="@drawable/button_border_2"
+                android:textColor="@color/black"
+                android:fontFamily="@font/font"
+                android:textStyle="bold">
 
-            </Button>
+            </android.widget.Button>
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_gate2"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="회원가입"
-                android:textColor="#584B00"
-                android:textStyle="bold"
-                android:backgroundTint="#faf4c0">
+                android:fontFamily="@font/font"
+                android:elevation="3dp"
+                android:background="@drawable/button_border_2"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold">
 
-            </Button>
+            </android.widget.Button>
 
         </LinearLayout>
 

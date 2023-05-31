@@ -34,13 +34,12 @@ import java.util.Map;
 import java.util.Random;
 
 public class SurveyActivity extends AppCompatActivity {
-    private static String ADDRESS_MENU = "http://52.78.72.175/data/preference";
-    private static String ADDRESS_SURVEY = "http://52.78.72.175/data/preference/update";
+    private static String ADDRESS_SURVEY = "http://52.78.72.175/data/preference/10";
+    private static String ADDRESS_PREFER = "http://52.78.72.175/data/preference/update";
     private Button skip, save;
     private String token;
     private ListView mListview;
     private SurveyAdapter adapter;
-    private TextView txt;
     private Random random;
     private HashMap<String, String> map = new HashMap<>();
 
@@ -51,64 +50,50 @@ public class SurveyActivity extends AppCompatActivity {
         random = new Random();
         random.setSeed(System.currentTimeMillis());
 
-        skip = findViewById(R.id.btn_skip);
         save = findViewById(R.id.btn_save);
         mListview = findViewById(R.id.listv_survey);
 
         Intent getintent = getIntent();
-        //token = getintent.getStringExtra("token");
-        token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
-
-
+        token = getintent.getStringExtra("token");
+/*
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        GetMenu getMenu = new GetMenu(SurveyActivity.this);
-        getMenu.execute(ADDRESS_MENU, token);
+        }*/
+        GetPreference getPreference = new GetPreference(SurveyActivity.this);
+        getPreference.execute(ADDRESS_SURVEY, token);
         adapter = new SurveyAdapter();
 
         // 서버의 데이터를 순서대로 읽어 어댑터에 저장
         try {
-            JSONArray jsonArray = new JSONArray(getMenu.get());
+            JSONArray jsonArray = new JSONArray(getPreference.get());
             int j = 0;
 
-            for(int i=0; i<5; i++){
-                String preference = "";
+            for(int i=0; i<10; i++){
                 JSONObject item = new JSONObject();
-                do {
-                    item = jsonArray.getJSONObject(j);
-                    preference = item.getString("preference");
-                    j++;
-                } while (preference.contains("1")); // 이미 평가된 메뉴일 경우 어댑터에 저장하지 않음
-
+                item = jsonArray.getJSONObject(i);
                 int id = Integer.parseInt(item.getString("id"));
-                String category = item.getString("category");
                 String name = item.getString("name");
                 String image = item.getString("image");
 
-                adapter.addSItem(id, category, name, "http://52.78.72.175" + image, Integer.parseInt(preference));
+                adapter.addSItem(id, name, image);
             }
         } catch (Exception e) {
             Log.d("survey", "Error ", e);
         }
         mListview.setAdapter(adapter);
 
-        skip.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-        });
-
         save.setOnClickListener(v -> {
             for(Map.Entry<String, String> entrySet : map.entrySet()){
                 PostSurvey postSurvey = new PostSurvey(SurveyActivity.this);
-                postSurvey.execute(ADDRESS_SURVEY, entrySet.getKey(), entrySet.getValue(), token);
+                postSurvey.execute(ADDRESS_PREFER, entrySet.getKey(), entrySet.getValue(), token);
             }
 
-            Toast.makeText(SurveyActivity.this, "취향 정보가 저장되었습니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(SurveyActivity.this, "가입이 완료되었습니다.", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            intent.putExtra("key", "s");
             startActivity(intent);
         });
     }
@@ -145,7 +130,7 @@ public class SurveyActivity extends AppCompatActivity {
             SurveyItem surveyItem = data.get(position);
             name.setText(surveyItem.getName());
 
-            if(!surveyItem.getImage().equals("http://52.78.72.175null")){
+            if(!surveyItem.getImage().equals("null")){
                 Thread thread = new Thread() {
                     @Override
                     public void run(){
@@ -186,19 +171,16 @@ public class SurveyActivity extends AppCompatActivity {
                             radio = "-1";
                             break;
                     }
-                    txt.setText(String.valueOf(surveyItem.getId()) + radio);
                     map.put(String.valueOf(surveyItem.getId()), radio);
                 }
             });
             return view;
         }
-        public void addSItem(int id, String category, String name, String image, int preference){
+        public void addSItem(int id, String name, String image){
             SurveyItem item = new SurveyItem();
             item.setId(id);
-            item.setCategory(category);
             item.setName(name);
             item.setImage(image);
-            item.setPreference(preference);
             data.add(item);
         }
     }

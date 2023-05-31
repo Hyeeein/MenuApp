@@ -12,15 +12,27 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+        <!-- 타이틀바 제거 -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
         <item name="android:divider">#000000</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:dividerHeight">2dp</item>
     </style>
 
     <style name="SpinnerTheme" parent="Theme.MenuApp_Test">
         <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
     </style>
+
+    <style name="Theme.MenuApp_Test.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MenuApp_Test.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

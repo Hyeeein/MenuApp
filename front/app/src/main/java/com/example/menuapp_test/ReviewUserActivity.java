@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,7 @@ public class ReviewUserActivity extends AppCompatActivity {
     private ListView listView;
     private ReviewUserAdapter adapter;
     private String token, rid, JsonString;
+    private FloatingActionButton home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +47,17 @@ public class ReviewUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_user);
 
         Intent getIntent = getIntent();
-        //token = getIntent.getStringExtra("token");
-        token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
+        token = getIntent.getStringExtra("token");
 
         listView = findViewById(R.id.listv_review_user);
+        home = findViewById(R.id.fab);
+
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("token", token);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
 
         // 사용자 리뷰 받아와서 리스트뷰에 추가
         APIReviewUser getReview = new APIReviewUser(ReviewUserActivity.this);
@@ -62,7 +72,8 @@ public class ReviewUserActivity extends AppCompatActivity {
                 JSONObject item = jsonArray.getJSONObject(i);
                 int id = Integer.parseInt(item.getString("id"));
                 String content = item.getString("content");
-                String datetime = item.getString("datetime");
+                String Datetime = item.getString("datetime");
+                String datetime = Datetime.substring(0, 10);
 
                 JSONObject user = (JSONObject) item.get("user");
                 String nickname = user.getString("nickname");
@@ -81,7 +92,7 @@ public class ReviewUserActivity extends AppCompatActivity {
                     rating = Float.parseFloat(item.getString("rating"));
                 else rating = 0;
 
-                adapter.addReviewItem(id, rating, content, datetime, nickname, menuname, rname, "http://52.78.72.175" + image);
+                adapter.addReviewItem(id, rating, content, datetime, nickname, menuname, rname, "http://52.78.72.175"+image);
             }
 
             listView.setAdapter(adapter);
@@ -98,22 +109,27 @@ public class ReviewUserActivity extends AppCompatActivity {
     class ReviewUserAdapter extends BaseAdapter {
         private ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
         private Bitmap bitmap;
-        public ReviewUserAdapter(){    }
+
+        public ReviewUserAdapter() {
+        }
 
         @Override
-        public int getCount(){
+        public int getCount() {
             return reviewItems.size();
         }
+
         @Override
         public long getItemId(int position) {
             return position;
         }
+
         @Override
         public Object getItem(int position) {
             return reviewItems.get(position);
         }
+
         @Override
-        public View getView(int position, View view, ViewGroup parent){
+        public View getView(int position, View view, ViewGroup parent) {
             Context context = parent.getContext();
 
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -143,7 +159,7 @@ public class ReviewUserActivity extends AppCompatActivity {
                 deleteReview.execute(ADDRESS_DELETE + rid, "DELETE", token);
 
                 try {
-                    if(deleteReview.get().contains("success")){
+                    if (deleteReview.get().contains("success")) {
                         reviewItems.remove(position);
                         listView.clearChoices();
                         adapter.notifyDataSetChanged();
@@ -156,10 +172,10 @@ public class ReviewUserActivity extends AppCompatActivity {
 
             });
 
-            if(!reviewItem.getImage().equals("http://52.78.72.175null")){
+            if (!reviewItem.getImage().equals("http://52.78.72.175null")) {
                 Thread thread = new Thread() {
                     @Override
-                    public void run(){
+                    public void run() {
                         try {
                             URL url = new URL(reviewItem.getImage());
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -182,13 +198,12 @@ public class ReviewUserActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-
-            else imageView.setVisibility(View.GONE);
+            } else imageView.setVisibility(View.GONE);
 
             return view;
         }
-        public void addReviewItem(int id, float rating, String content, String datetime, String nickname, String menuname, String rname, String image){
+
+        public void addReviewItem(int id, float rating, String content, String datetime, String nickname, String menuname, String rname, String image) {
             ReviewItem item = new ReviewItem();
             item.setId(id);
             item.setRating(rating);
@@ -200,11 +215,6 @@ public class ReviewUserActivity extends AppCompatActivity {
             item.setImage(image);
             reviewItems.add(item);
         }
-
-        public void removeItem(int position) {
-            reviewItems.remove(position);
-        }
-
     }
 }
 

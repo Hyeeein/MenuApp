@@ -29,9 +29,7 @@ public class JoinAllergieActivity extends AppCompatActivity {
     private static String TAG_ALLERGIE = "allergietest";
     private CheckBox egg, milk, wheat, bean, peanut, fish, meat, shellfish, crab;
     private String e, m, w, b, p, f, me, s, c;
-    private boolean scheck;
-    private Button save, end;
-    private TextView txt_result;
+    private Button end;
     private String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,38 +46,23 @@ public class JoinAllergieActivity extends AppCompatActivity {
         shellfish = (CheckBox) findViewById(R.id.chk_shellfish);
         crab = (CheckBox) findViewById(R.id.chk_crab);
 
-        save = findViewById(R.id.btn_join_save);
-        end = findViewById(R.id.btn_join_end);
-        txt_result = findViewById(R.id.txt_result);
+        end = findViewById(R.id.btn_join_save);
 
-        scheck = false;
-
-        save.setOnClickListener(v -> {
+        end.setOnClickListener(view -> {
             Intent getintent = getIntent();
-            //token = getintent.getStringExtra("token");
-            token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
+            token = getintent.getStringExtra("token");
 
             e = "0"; m = "0"; w = "0"; b = "0"; p = "0"; f = "0"; me = "0"; s = "0"; c = "0";
 
             sendAllergie(egg, milk, wheat, bean, peanut, fish, meat, shellfish, crab);
-            scheck = true;
 
-            //Toast.makeText(getApplicationContext(), e+m+w+b+p+f+me+s+c, Toast.LENGTH_LONG).show();
+            InsertAllergie insertAllergie = new InsertAllergie();
+            insertAllergie.execute(ADDRESS_ALLERGIE, e, m, w, b, p, f, me, s, c, token);
+
+            Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
+            intent.putExtra("token", token);
+            startActivity(intent);
         });
-
-        end.setOnClickListener(view -> {
-            if(scheck){
-                Toast.makeText(getApplicationContext(), e+m+w+b+p+f+me+s+c, Toast.LENGTH_LONG).show();
-                InsertAllergie insertAllergie = new InsertAllergie();
-                insertAllergie.execute(ADDRESS_ALLERGIE, e, m, w, b, p, f, me, s, c, token);
-
-                /*Intent intent = new Intent(getApplicationContext(), SurveyActivity.class);
-                intent.putExtra("token", token);
-                startActivity(intent);*/
-            }
-            else Toast.makeText(JoinAllergieActivity.this, "저장하기 버튼을 눌러주세요.", Toast.LENGTH_SHORT).show();
-        });
-
     }
 
     private void sendAllergie(CheckBox egg, CheckBox milk, CheckBox wheat, CheckBox bean, CheckBox peanut,
@@ -127,7 +110,6 @@ public class JoinAllergieActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            txt_result.setText(result);
             Log.d(TAG_ALLERGIE, "POST response - " + result);
         }
 
@@ -176,7 +158,7 @@ public class JoinAllergieActivity extends AppCompatActivity {
                 Log.d(TAG_ALLERGIE, "POST response code - " + responseStatusCode);
 
                 InputStream inputStream;
-                if (responseStatusCode == conn.HTTP_OK) {
+                if (responseStatusCode == conn.HTTP_OK || responseStatusCode == 201) {
                     inputStream = conn.getInputStream();
                 }
                 else {

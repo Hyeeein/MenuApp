@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -12,46 +13,47 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_bias="0.65"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-        <TextView
-            android:id="@+id/txt_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="280dp"
             android:layout_gravity="center_horizontal"
-            android:text="학교에서 뭐 먹지?"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:src="@drawable/gate_2"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:hint="이메일">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#ffffff"
+                android:fontFamily="@font/font"
+                android:textSize="20dp"
                 android:inputType="textEmailAddress" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:hint="비밀번호">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/font"
+                android:backgroundTint="#ffffff"
+                android:textSize="20dp"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,57 +62,47 @@
             android:id="@+id/chk_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="로그인 상태 유지"/>
+            android:fontFamily="@font/font"
+            android:textSize="20dp"
+            android:buttonTint="#ffffff"
+            android:text="자동 로그인"/>
 
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_login"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textSize="20dp"
             android:text="로그인"
+            android:elevation="3dp"
+            android:fontFamily="@font/font"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:backgroundTint="#faf4c0">
+            android:background="@drawable/button_border_2">
 
-        </Button>
+        </android.widget.Button>
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:gravity="center"
+            android:gravity="right"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_login_find"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:backgroundTint="#ffffff"
-                android:text="비밀번호 찾기"
-                android:textColor="#747474"
-                android:textStyle="bold" />
-
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_login2"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:text="회원 가입하기"
-                android:textColor="#747474"
-                android:textStyle="bold"
-                android:backgroundTint="#ffffff" />
+                android:fontFamily="@font/font"
+                android:elevation="3dp"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:background="@drawable/button_border_2"/>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:id="@+id/txt_result"
-            android:text="POST Result"/>
 
     </LinearLayout>
 

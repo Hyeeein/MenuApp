@@ -50,7 +50,7 @@ public class GetPreference extends AsyncTask<String, Void, String> {
             Log.d("GetPreference", "GET response code : " + responseStatusCode);
 
             InputStream inputStream;
-            if (responseStatusCode == conn.HTTP_OK) {         // 연결 성공 시
+            if (responseStatusCode == conn.HTTP_OK || responseStatusCode == 201) {         // 연결 성공 시
                 inputStream = conn.getInputStream();
             } else {                                          // 연결 실패 시
                 inputStream = conn.getErrorStream();

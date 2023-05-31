@@ -12,7 +12,10 @@ public class ListItem implements Serializable {
     private String image;
     private String rating;
     private boolean wish;
-    private String distance;
+    private int distance;
+    private String count;
+    private String latitude;
+    private String longitude;
 
     public String getName(){
         return name;
@@ -85,11 +88,35 @@ public class ListItem implements Serializable {
         this.wish = wish;
     }
 
-    public String getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

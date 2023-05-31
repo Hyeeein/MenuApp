@@ -5,15 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#faf4c0"
     tools:context=".JoinActivity">
 
+    <TextView
+        android:id="@+id/txt_join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.06"
+        android:text="회원 가입"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
     <ScrollView
+        android:paddingTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
@@ -21,45 +38,61 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" >
 
-            <TextView
-                android:id="@+id/txt_join"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="회원 가입"
-                android:textSize="25dp"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:hint="이메일">
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/linearlayout_border"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/join_id"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"/>
+                    android:hint="이메일">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/join_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#ffffff"
+                        android:textSize="20dp"
+                        android:fontFamily="@font/font"
+                        android:inputType="textEmailAddress"/>
 
-            <!-- 이메일 중복 -->
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btn_join_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이메일 중복 확인"
-                android:backgroundTint="#faf4c0"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                <!-- 이메일 중복 -->
 
+                <Button
+                    android:id="@+id/btn_join_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이메일 중복 확인"
+                    android:fontFamily="@font/font"
+                    android:backgroundTint="#ffffff"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"/>
+
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/linearlayout_border"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="비밀번호">
@@ -68,29 +101,35 @@
                     android:id="@+id/join_pw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/font"
+                    android:backgroundTint="#ffffff"
+                    android:textSize="20dp"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <TextView
                 android:id="@+id/txt_join_pw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="숫자,영문 대소문자,특수문자를 포함해주세요."
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="5dp"
                 android:textColor="#747474"
-                android:textSize="15sp" />
+                android:textSize="20dp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="12dp"
                 android:hint="비밀번호 확인">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/join_pw2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/font"
+                    android:textSize="20dp"
+                    android:backgroundTint="#ffffff"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,18 +138,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="비밀번호 확인"
-                android:backgroundTint="#faf4c0"
+                android:fontFamily="@font/font"
+                android:backgroundTint="#ffffff"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/linearlayout_border"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="닉네임">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/join_name"
+                    android:fontFamily="@font/font"
+                    android:backgroundTint="#ffffff"
+                    android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -120,77 +176,53 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="닉네임 중복 확인"
-                android:backgroundTint="#faf4c0"
+                android:fontFamily="@font/font"
+                android:backgroundTint="#ffffff"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/linearlayout_border"
                 android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:hint="출생연도">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/join_age"
-                        android:inputType="numberDecimal"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <Spinner
+                    android:id="@+id/spinner_year"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:hint="성별">
+                    android:layout_height="48dp"
+                    android:entries="@array/출생연도"
+                    android:theme="@style/SpinnerDivideStyle" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/join_gender"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-
-                <CheckBox
-                    android:id="@+id/chk_join"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:text="개인 정보 수집 및 이용 동의" />
-
-                <CheckBox
-                    android:id="@+id/chk_join_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="위치 정보 이용 약관 동의"/>
+                <Spinner
+                    android:id="@+id/spinner_gender"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="10dp"
+                    android:entries="@array/성별"
+                    android:theme="@style/SpinnerDivideStyle" />
 
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:id="@+id/txt_result"
-                android:text="POST Result"/>
 
             <Button
                 android:id="@+id/btn_join_1"
-                android:layout_width="330dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="right|center"
                 android:text="다음"
-                android:backgroundTint="#faf4c0"
+                android:textSize="20dp"
+                android:fontFamily="@font/font"
+                android:backgroundTint="#ffffff"
                 android:textColor="@color/black"
                 android:textStyle="bold">
 

@@ -5,59 +5,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f6f6f6"
     tools:context=".JoinAllergieActivity">
 
-    <LinearLayout
-        android:layout_width="300dp"
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:background="#faf4c0" />
+
+    <TextView
+        android:id="@+id/txt_join_allergie"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="알레르기 정보 입력"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_gravity="center_horizontal"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" >
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.05"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/txt_join_allergie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="알레르기 및 선호 음식 선택"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:textColor="@color/black" />
-
-        <!-- 알레르기 -->
         <TextView
             android:id="@+id/txt_join_allergie2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:text="알레르기 여부"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:layout_marginTop="130dp"
+            android:text="해당되는 재료를 선택해 주시면"
+            android:textSize="25dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="정확한 메뉴 추천이 가능해요!"
+            android:textSize="25dp"
+            android:textColor="@color/black" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/allergie_border"
             android:orientation="vertical">
 
-            <!-- 오류로 높이 48dp. 오류 수정되면 30dp으로 조정 -->
             <CheckBox
                 android:id="@+id/chk_egg"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:textSize="20dp"
+                android:fontFamily="@font/font"
                 android:text="달걀" />
 
             <CheckBox
                 android:id="@+id/chk_milk"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
+                android:textSize="20dp"
+                android:fontFamily="@font/font"
                 android:text="우유" />
 
             <!-- 견과류 -->
@@ -71,18 +89,26 @@
                     android:id="@+id/chk_wheat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/font"
+                    android:textSize="20dp"
                     android:text="밀" />
 
                 <CheckBox
                     android:id="@+id/chk_bean"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/font"
                     android:text="콩" />
 
                 <CheckBox
                     android:id="@+id/chk_peanut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/font"
                     android:text="땅콩/대두" />
 
             </LinearLayout>
@@ -97,12 +123,17 @@
                     android:id="@+id/chk_fish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/font"
                     android:text="생선" />
 
                 <CheckBox
                     android:id="@+id/chk_meat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/font"
                     android:text="고기" />
 
             </LinearLayout>
@@ -117,12 +148,17 @@
                     android:id="@+id/chk_shellfish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:fontFamily="@font/font"
                     android:text="조개" />
 
                 <CheckBox
                     android:id="@+id/chk_crab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/font"
                     android:text="갑각류" />
 
             </LinearLayout>
@@ -130,43 +166,21 @@
         </LinearLayout>
 
 
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_join_save"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:id="@+id/txt_result"
-            android:text="POST Result"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="right|center"
+            android:text="다음"
+            android:fontFamily="@font/font"
+            android:backgroundTint="#faf4c0"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/btn_join_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="저장하기"
-                android:backgroundTint="#faf4c0"
-                android:textColor="@color/black"
-                android:textStyle="bold">
-
-            </Button>
-            <Button
-                android:id="@+id/btn_join_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="회원가입"
-                android:backgroundTint="#faf4c0"
-                android:textColor="@color/black"
-                android:textStyle="bold">
-
-            </Button>
-        </LinearLayout>
+        </Button>
 
     </LinearLayout>
 

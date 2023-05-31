@@ -19,6 +19,7 @@ public class GateActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> {
             Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("key", "g");
             startActivity(intent);
         });
 

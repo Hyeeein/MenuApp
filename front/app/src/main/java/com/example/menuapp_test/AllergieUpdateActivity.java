@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -26,10 +28,9 @@ public class AllergieUpdateActivity extends AppCompatActivity {
     private static String ADDRESS_PUT = "http://52.78.72.175/data/allergy";
     private CheckBox egg, milk, wheat, bean, peanut, fish, meat, shellfish, crab;
     private String e, m, w, b, p, f, me, s, c;
-    private boolean scheck;
-    private Button save, end;
-    private TextView txt_result;
-    private String token;
+    private Button end;
+    private String token, allergie, nickname, email, intro;
+    private FloatingActionButton home;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,28 +45,48 @@ public class AllergieUpdateActivity extends AppCompatActivity {
         meat = (CheckBox) findViewById(R.id.chk_meat);
         shellfish = (CheckBox) findViewById(R.id.chk_shellfish);
         crab = (CheckBox) findViewById(R.id.chk_crab);
+        home = findViewById(R.id.fab);
+
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("token", token);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
+        Intent getintent = getIntent();
+        token = getintent.getStringExtra("token");
+        allergie = getintent.getStringExtra("allergie");
+        nickname = getintent.getStringExtra("nickname");
+        email = getintent.getStringExtra("email");
+        intro = getintent.getStringExtra("intro");
+
+        if(allergie.contains("달걀")) egg.setChecked(true);
+        if(allergie.contains("우유")) milk.setChecked(true);
+        if(allergie.contains("밀")) wheat.setChecked(true);
+        if(allergie.contains("콩")) bean.setChecked(true);
+        if(allergie.contains("땅콩")) peanut.setChecked(true);
+        if(allergie.contains("생선")) fish.setChecked(true);
+        if(allergie.contains("고기")) meat.setChecked(true);
+        if(allergie.contains("조개")) shellfish.setChecked(true);
+        if(allergie.contains("갑각류")) crab.setChecked(true);
 
         end = findViewById(R.id.btn_end_update);
-        txt_result = findViewById(R.id.txt_result);
-
-        scheck = false;
 
         end.setOnClickListener(view -> {
-            Intent getintent = getIntent();
-            //token = getintent.getStringExtra("token");
-            token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
 
             e = "0"; m = "0"; w = "0"; b = "0"; p = "0"; f = "0"; me = "0"; s = "0"; c = "0";
 
             sendAllergie(egg, milk, wheat, bean, peanut, fish, meat, shellfish, crab);
-            scheck = true;
 
-            Toast.makeText(getApplicationContext(), e+m+w+b+p+f+me+s+c, Toast.LENGTH_LONG).show();
             InsertAllergie insertAllergie = new InsertAllergie();
             insertAllergie.execute(ADDRESS_PUT, e, m, w, b, p, f, me, s, c, token);
 
             Intent intent = new Intent(AllergieUpdateActivity.this, SettingActivity.class);
             intent.putExtra("token", token);
+            intent.putExtra("nickname", nickname);
+            intent.putExtra("email", email);
+            intent.putExtra("intro", intro);
             startActivity(intent);
         });
     }
@@ -115,7 +136,6 @@ public class AllergieUpdateActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             progressDialog.dismiss();
-            txt_result.setText(result);
             Log.d("PutAllergie", "POST response - " + result);
         }
 

@@ -54,36 +54,37 @@ public class MAdapter extends BaseAdapter {
 
         if(menuItem.getCheckallergy()) allergie.setText("알레르기 주의!");
 
-        Thread thread = new Thread() {
-            @Override
-            public void run(){
-                try {
-                    URL url = new URL(menuItem.getImage());
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
+        if(!menuItem.getImage().equals("null")){
+            Thread thread = new Thread() {
+                @Override
+                public void run(){
+                    try {
+                        URL url = new URL(menuItem.getImage());
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
 
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        InputStream is = conn.getInputStream();
+                        bitmap = BitmapFactory.decodeStream(is);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            };
+            thread.start();
+            try {
+                thread.join();
+                imageView.setImageBitmap(bitmap);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
-        thread.start();
-        try {
-            thread.join();
-            imageView.setImageBitmap(bitmap);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-
         return view;
     }
 
-    public void addRItem(int id, int restaurant, String category, String name, String price, String emotion, String weather, String image, Boolean chechallergy){
+    public void addRItem(int id, int restaurant, String category, String name, String price, String emotion, String weather, String image, boolean chechallergy){
         MenuItem item = new MenuItem();
         item.setId(id);
         item.setRestaurant(restaurant);

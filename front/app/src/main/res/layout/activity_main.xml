@@ -5,26 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#faf4c0"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
+
     <LinearLayout
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
+        app:layout_constraintVertical_bias="0.65"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" >
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:src="@drawable/main_2"
+            android:scaleType="fitCenter"/>
 
         <LinearLayout
             android:layout_width="320dp"
             android:layout_height="96dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_marginTop="50dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="닉네임"
-                    android:textSize="22dp"
+                    android:textSize="30dp"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
@@ -48,10 +57,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="님의 현재 위치"
-                    android:textSize="18dp"
-                    android:textColor="@color/black"
-                    android:textStyle="bold" />
+                    android:text="님은 지금"
+                    android:textSize="25dp"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <TextView
@@ -60,86 +68,79 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="인천대학교"
-                android:textSize="22dp"
+                android:textSize="28dp"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="330dp"
-            android:layout_height="5px"
-            android:background="#D6C8A1"
-            android:layout_marginTop="50dp"/>
 
         <LinearLayout
-            android:layout_width="320dp"
-            android:layout_height="300dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                tools:ignore="MissingConstraints">
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_main_list"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="6.5dp"
-                    android:text="주변 음식점 조회"
-                    android:textStyle="bold"
-                    android:backgroundTint="#ffffff"
-                    android:textColor="@color/black">
-
-                </Button>
-
-                <Button
+                <android.widget.Button
                     android:id="@+id/btn_main_menu"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="6.5dp"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
                     android:text="메뉴 추천"
                     android:textStyle="bold"
-                    android:backgroundTint="#ffffff"
-                    android:textColor="@color/black">
+                    android:textSize="25dp"
+                    android:fontFamily="@font/font"
+                    android:elevation="5dp"
+                    android:background="@drawable/button_border"
+                    android:textColor="@color/white" >
 
-                </Button>
+                </android.widget.Button>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:gravity="center"
+                android:layout_height="70dp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 tools:ignore="MissingConstraints">
 
-                <Button
-                    android:id="@+id/btn_main_review"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                <android.widget.Button
+                    android:id="@+id/btn_main_list"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="6.5dp"
-                    android:text="리뷰 관리"
+                    android:text="주변 음식점"
                     android:textStyle="bold"
-                    android:backgroundTint="#ffffff"
+                    android:fontFamily="@font/font"
+                    android:textSize="20dp"
+                    android:elevation="3dp"
+                    android:background="@drawable/button_border_2"
                     android:textColor="@color/black">
-                </Button>
 
-                <Button
+                </android.widget.Button>
+
+                <android.widget.Button
                     android:id="@+id/btn_main_mypage"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="6.5dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
                     android:text="마이페이지"
                     android:textStyle="bold"
-                    android:backgroundTint="#ffffff"
+                    android:fontFamily="@font/font"
+                    android:elevation="3dp"
+                    android:textSize="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_border_2"
                     android:textColor="@color/black">
-                </Button>
+                </android.widget.Button>
 
             </LinearLayout>
 

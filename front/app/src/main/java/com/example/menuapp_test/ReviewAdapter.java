@@ -59,7 +59,7 @@ public class ReviewAdapter extends BaseAdapter {
         rating.setRating(reviewItem.getRating());
 
 
-        if(!reviewItem.getImage().equals("http://52.78.72.175null")){
+        if(!reviewItem.getImage().equals("null")){
             Thread thread = new Thread() {
                 @Override
                 public void run(){
@@ -86,7 +86,6 @@ public class ReviewAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
         }
-
         else imageView.setVisibility(View.GONE);
 
         return view;

@@ -45,6 +45,8 @@ public class PopupPW extends Activity {
 
             try {
                 if(delete.get().contains("delete")){
+                    Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    SharedPreferencesManager.clearPreferences(PopupPW.this);
                     Intent intent = new Intent(this, GateActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

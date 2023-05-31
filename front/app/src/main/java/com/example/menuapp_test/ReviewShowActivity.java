@@ -6,8 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +25,10 @@ import java.net.URL;
 public class ReviewShowActivity extends AppCompatActivity {
     private static String ADDRESS_REVIEW = "http://52.78.72.175/data/restaurant/";
     private ListView listView;
+    private TextView name;
     private String token, rid, rname, JsonString;
     private ReviewAdapter adapter;
+    private FloatingActionButton home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +36,21 @@ public class ReviewShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_show);
 
         listView = findViewById(R.id.listv_review_show);
+        name = findViewById(R.id.rname_review_show);
 
         Intent getIntent = getIntent();
-        //token = getIntent.getStringExtra("token");
-        token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
-        //rid = getIntent.getStringExtra("Rid");
-        rid = "1";
+        token = getIntent.getStringExtra("token");
+        rid = getIntent.getStringExtra("Rid");
         rname = getIntent.getStringExtra("Rname");
+        name.setText(rname);
+        home = findViewById(R.id.fab);
+
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("token", token);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
 
         GetData getData = new GetData();
         getData.execute(ADDRESS_REVIEW + rid + "/review", token);
@@ -81,7 +94,7 @@ public class ReviewShowActivity extends AppCompatActivity {
                 Log.d("GetReview", "response code : " + responseStatusCode);
 
                 InputStream inputStream;
-                if(responseStatusCode == conn.HTTP_OK){         // 연결 성공 시
+                if(responseStatusCode == conn.HTTP_OK || responseStatusCode == 201){         // 연결 성공 시
                     inputStream = conn.getInputStream();
                 }
                 else {                                          // 연결 실패 시
@@ -120,7 +133,8 @@ public class ReviewShowActivity extends AppCompatActivity {
                 JSONObject item = jsonArray.getJSONObject(i);       // 해당 그룹의 데이터 하나씩 읽어서 각각의 변수에 저장
                 int id = Integer.parseInt(item.getString("id"));
                 String content = item.getString("content");
-                String datetime = item.getString("datetime");
+                String Datetime = item.getString("datetime");
+                String datetime = Datetime.substring(0, 10);
 
                 JSONObject user = (JSONObject) item.get("user");
                 String nickname = user.getString("nickname");

@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,15 +37,15 @@ import java.util.Map;
 import java.util.Random;
 
 public class PreferenceUpdateActivity extends AppCompatActivity {
-    private static String ADDRESS_MENU = "http://52.78.72.175/data/preference";
+    private static String ADDRESS_MENU = "http://52.78.72.175/data/preference/50";
     private static String ADDRESS_SURVEY = "http://52.78.72.175/data/preference/update";
     private Button skip, save;
-    private String token;
+    private String token, nickname, email, intro;
     private ListView mListview;
     private SurveyAdapter adapter;
-    private TextView txt;
     private Random random;
     private HashMap<String, String> map = new HashMap<>();
+    private FloatingActionButton home;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +57,26 @@ public class PreferenceUpdateActivity extends AppCompatActivity {
         save = findViewById(R.id.btn_prefer);
         mListview = findViewById(R.id.listv_prefer);
 
-        Intent getintent = getIntent();
-        //token = getintent.getStringExtra("token");
-        token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
+        Intent getIntent = getIntent();
+        token = getIntent.getStringExtra("token");
+        nickname = getIntent.getStringExtra("nickname");
+        email = getIntent.getStringExtra("email");
+        intro = getIntent.getStringExtra("intro");
 
+        home = findViewById(R.id.fab);
 
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("token", token);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+/*
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         GetMenu getMenu = new GetMenu(PreferenceUpdateActivity.this);
         getMenu.execute(ADDRESS_MENU, token);
         adapter = new SurveyAdapter();
@@ -74,21 +86,20 @@ public class PreferenceUpdateActivity extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(getMenu.get());
             int j = 0;
 
-            for(int i=0; i<5; i++){
+            for(int i=0; i<50; i++){
                 String preference = "";
                 JSONObject item = new JSONObject();
-                do {
+/*                do{
                     item = jsonArray.getJSONObject(j);
                     preference = item.getString("preference");
                     j++;
-                } while (preference.contains("1")); // 이미 평가된 메뉴일 경우 어댑터에 저장하지 않음
-
+                } while (preference.equals("1"));*/
+                item = jsonArray.getJSONObject(i);
                 int id = Integer.parseInt(item.getString("id"));
-                String category = item.getString("category");
                 String name = item.getString("name");
                 String image = item.getString("image");
 
-                adapter.addSItem(id, category, name, "http://52.78.72.175" + image, Integer.parseInt(preference));
+                adapter.addSItem(id, name, image);
             }
         } catch (Exception e) {
             Log.d("survey", "Error ", e);
@@ -103,8 +114,11 @@ public class PreferenceUpdateActivity extends AppCompatActivity {
 
             Toast.makeText(PreferenceUpdateActivity.this, "취향 정보가 저장되었습니다.", Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+            Intent intent = new Intent(this, SettingActivity.class);
             intent.putExtra("token", token);
+            intent.putExtra("nickname", nickname);
+            intent.putExtra("email", email);
+            intent.putExtra("intro", intro);
             startActivity(intent);
         });
     }
@@ -141,7 +155,7 @@ public class PreferenceUpdateActivity extends AppCompatActivity {
             SurveyItem surveyItem = data.get(position);
             name.setText(surveyItem.getName());
 
-            if(!surveyItem.getImage().equals("http://52.78.72.175null")){
+            if(!surveyItem.getImage().equals("null")){
                 Thread thread = new Thread() {
                     @Override
                     public void run(){
@@ -187,13 +201,11 @@ public class PreferenceUpdateActivity extends AppCompatActivity {
             });
             return view;
         }
-        public void addSItem(int id, String category, String name, String image, int preference){
+        public void addSItem(int id, String name, String image){
             SurveyItem item = new SurveyItem();
             item.setId(id);
-            item.setCategory(category);
             item.setName(name);
             item.setImage(image);
-            item.setPreference(preference);
             data.add(item);
         }
     }

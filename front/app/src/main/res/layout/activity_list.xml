@@ -1,52 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f6f6f6"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ListActivity">
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="90dp"
-        android:background="#faf4c0" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/list_location"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="인천대"
-            android:textSize="30dp"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+        <ListView
+            android:id="@+id/listv_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:divider="#f6f6f6"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            android:dividerHeight="10dp"
+            tools:listitem="@layout/item_list" />
 
-        <TextView
-            android:id="@+id/txt_list"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
-            android:gravity="center"
-            android:text="주변 음식점"
-            android:textSize="22dp"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
+            android:elevation="10dp"
+            android:background="#faf4c0"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="주변"
+                android:textSize="30dp"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:text="음식점이에요!"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listv_list"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@drawable/home_48px" />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="90dp"
-        android:paddingBottom="50dp"
-        tools:listitem="@layout/item_list" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="bottom|start"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/bappool_p" />
+
+        <android.widget.Button
+            android:id="@+id/btn_map"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="지도 보기"
+            android:textStyle="bold"
+            android:fontFamily="@font/font"
+            android:textColor="@color/cardview_dark_background"
+            android:elevation="3dp"
+            android:textSize="20dp"
+            android:background="@drawable/button_border_2"
+            android:layout_marginTop="5dp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

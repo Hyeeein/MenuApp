@@ -14,13 +14,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,14 +30,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ListActivity extends AppCompatActivity {
-    private static String ADDRESS_LIST = "http://52.78.72.175/data/restaurant";
-    private static String TAG = "List";
+    private static String ADDRESS_LIST = "http://52.78.72.175/data/aroundrestaurant";
+    private static String ADDRESS_WISH = "http://52.78.72.175/data/favorite";
     private static final String TAG_NAME = "name";
     private static final String TAG_ADDRESS = "address";
     private static String TAG_BUSINESS = "business_hours";
@@ -46,10 +49,12 @@ public class ListActivity extends AppCompatActivity {
     private static final String TAG_IMAGE = "image";
     private static String TAG_RATING = "rating";
     private ListView mlistView;
-    //private ArrayList<HashMap<String, String>> listItems;
+    private ArrayList<ListItem> listItems = new ArrayList<ListItem>();
     private ListAdapter adapter;
-    private String token, mJsonString, rid;
+    private String token, address, latitude, longitude, mJsonString, rid, rlatitude, rlongitude;
     private boolean Wish;
+    private FloatingActionButton home;
+    private Button map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,21 +62,43 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         Intent getIntent = getIntent();
-        //token = getIntent.getStringExtra("token");
-        token = "49e9d8db7d6d31d3623b4af2d3fb97178d6d773e";
+        token = getIntent.getStringExtra("token");
+        address = getIntent.getStringExtra("address");
+        latitude = getIntent.getStringExtra("latitude");
+        longitude = getIntent.getStringExtra("longitude");
 
         mlistView = (ListView) findViewById(R.id.listv_list);
+        home = findViewById(R.id.fab);
+        map = findViewById(R.id.btn_map);
 
-        GetData task = new GetData();
-        task.execute(ADDRESS_LIST, token);
-        mlistView.setOnItemClickListener((adapterView, view, i, l) -> {
-            ListItem item = (ListItem) adapter.getItem(i);
-            Intent intent = new Intent(this, RestaurantActivity.class);
+        home.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("token", token);
-            intent.putExtra("item", item);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
+        GetData task = new GetData();
+        task.execute(ADDRESS_LIST, latitude, longitude, token);
+
+        mlistView.setOnItemClickListener((adapterView, view, i, l) -> {
+            ListItem item = (ListItem) adapter.getItem(i);
+            rid = String.valueOf(item.getId());
+            Intent intent = new Intent(this, RestaurantActivity.class);
+            intent.putExtra("token", token);
+            intent.putExtra("Rid", rid);
+            intent.putExtra("listItem", item);
+            startActivity(intent);
+        });
+
+        map.setOnClickListener(v-> {
+            Intent intent = new Intent(this, Map.class);
+            intent.putExtra("token", token);
+            intent.putExtra("longitude", longitude);
+            intent.putExtra("latitude", latitude);
+            intent.putExtra("listItems", listItems);
+            startActivity(intent);
+        });
     }
 
     private class GetData extends AsyncTask<String, Void, String> {
@@ -86,7 +113,7 @@ public class ListActivity extends AppCompatActivity {
         protected void onPostExecute(String result){
             super.onPostExecute(result);
             progressDialog.dismiss();
-            Log.d(TAG, "response : " + result);
+            Log.d("PostList", "response : " + result);
 
             mJsonString = result;               // 서버의 데이터를 문자열로 읽어와서 변수에 저장
             showResult();
@@ -96,7 +123,9 @@ public class ListActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params){
             String serverURL = params[0];
-            String Token = params[1];
+            String Latitude = params[1];
+            String Longitude = params[2];
+            String Token = params[3];
 
             try {
                 URL url = new URL(serverURL);
@@ -104,38 +133,48 @@ public class ListActivity extends AppCompatActivity {
 
                 conn.setReadTimeout(5000);
                 conn.setConnectTimeout(5000);
+                conn.setRequestProperty("Content-Type", "application/json");
                 conn.setRequestProperty("Authorization", "TOKEN " + Token);
+                conn.setRequestMethod("POST");
                 conn.connect();
 
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("latitude", Latitude);
+                jsonObject.put("longitude", Longitude);
+
+                OutputStream outputStream = conn.getOutputStream();
+                outputStream.write(jsonObject.toString().getBytes());
+                outputStream.flush();
+                outputStream.close();
+
                 int responseStatusCode = conn.getResponseCode();
-                Log.d(TAG, "response code : " + responseStatusCode);
+                Log.d("PostList", "POST response code - " + responseStatusCode);
 
                 InputStream inputStream;
-                if(responseStatusCode == conn.HTTP_OK){         // 연결 성공 시
+                if (responseStatusCode == conn.HTTP_OK || responseStatusCode == 201) {
                     inputStream = conn.getInputStream();
                 }
-                else {                                          // 연결 실패 시
+                else {
                     inputStream = conn.getErrorStream();
                 }
+
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
                 StringBuilder sb = new StringBuilder();
-                String line;
+                String line = null;
 
-                while((line = bufferedReader.readLine()) != null){
+                while((line = bufferedReader.readLine())!= null)  {
                     sb.append(line);
                 }
 
                 bufferedReader.close();
-                conn.disconnect();
 
-                return sb.toString().trim();
-
+                return sb.toString();
             }
-            catch (Exception e){
-                e.printStackTrace();
-                return null;
+            catch (Exception e) {
+                Log.d("PostList", "InsertData : Error ", e);
+                return new String("Error: " + e.getMessage());
             }
 
         }
@@ -151,47 +190,31 @@ public class ListActivity extends AppCompatActivity {
                 int id = Integer.parseInt(item.getString("id"));
                 String name = item.getString(TAG_NAME);
                 String address = item.getString(TAG_ADDRESS);
-                String business = item.getString(TAG_BUSINESS);
+                String category = item.getString(TAG_CATEGORY_NAME);
                 String phone = item.getString(TAG_PHONE);
-                String category_name = item.getString(TAG_CATEGORY_NAME);
-                String image = ""; String rating = "0";
+                String business = item.getString(TAG_BUSINESS);
+                int distance = item.getInt("distance");
+                String image = ""; double rating = 0;
                 if(!item.getString(TAG_IMAGE).equals("null"))
                     image = item.getString(TAG_IMAGE);
                 else image = "null";
                 if(!item.getString(TAG_RATING).equals("null"))
-                    rating = item.getString(TAG_RATING);
-                else rating = "0";
-                //String distance = item.getString("distance");
-                //boolean wish = Boolean.parseBoolean(item.getString("wish"));
-                String distance = "70";
-                boolean wish = true;
-                adapter.addRItem(id, name, address, business, phone, category_name, "http://52.78.72.175" + image, rating, distance, wish);
+                    rating = item.getDouble(TAG_RATING);
+                else rating = 0;
+                String Rating = String.format("%.1f", rating);
+                String Count = item.getString("count");
+                boolean wish = Boolean.parseBoolean(item.getString("favor"));
+                String Latitude = item.getString("latitude");
+                String Longitude = item.getString("longitude");
+
+                adapter.addRItem(id, name, address, image, Rating, distance, wish, category, phone, business, Count, Latitude, Longitude);
             }
-
             mlistView.setAdapter(adapter);
-
-                /*HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put(TAG_NAME, name);
-                hashMap.put(TAG_ADDRESS, address);
-                hashMap.put(TAG_CATEGORY_NAME, category_name);
-                hashMap.put(TAG_IMAGE, "http://52.78.72.175"+image);                      // hashmap에 짝 지어 넣음
-
-                listItems.add(hashMap);                             // 데이터 저장된 최종 변수
-                ListAdapter adapter = new SimpleAdapter(                // 이미지 불러오기 위해 어댑터 클래스 새로 만들어야 함
-                    ListActivity.this, listItems, R.layout.item_list,
-                    new String[]{TAG_NAME, TAG_ADDRESS, TAG_CATEGORY_NAME, TAG_IMAGE},
-                    new int[]{R.id.rname_list, R.id.address_item_list, R.id.category_list, R.id.img_list}
-                );
-                mlistView.setAdapter(adapter);
-                 */
-
-
         } catch (JSONException e) {
-            Log.d(TAG, "showResult : ", e);
+            Log.d("PostList", "showResult : ", e);
         }
     }
     class ListAdapter extends BaseAdapter {
-        private ArrayList<ListItem> listItems = new ArrayList<ListItem>();
         private Bitmap bitmap;
         public ListAdapter(){
         }
@@ -221,15 +244,30 @@ public class ListActivity extends AppCompatActivity {
             TextView category_name = (TextView) view.findViewById(R.id.category_list);
             TextView rating = view.findViewById(R.id.star_list);
             CheckBox wish = view.findViewById(R.id.imgbtn_list);
+            TextView distance = view.findViewById(R.id.distance_list);
 
             ListItem listItem = listItems.get(position);
+            Comparator<ListItem> sort = new Comparator<ListItem>() {
+                @Override
+                public int compare(ListItem t1, ListItem t2) {
+                    int ret;
+                    if(t1.getDistance() < t2.getDistance())
+                        ret = -1;
+                    else if(t1.getDistance() == t2.getDistance())
+                        ret = 0;
+                    else ret = 1;
+                    return ret;
+                }
+            };
+            Collections.sort(listItems, sort);
 
             name.setText(listItem.getName());
             address.setText(listItem.getAddress());
             category_name.setText(listItem.getCategory_name());
             rating.setText(listItem.getRating());
+            distance.setText(String.valueOf(listItem.getDistance()));
 
-            if(!listItem.getImage().equals("http://52.78.72.175null")){
+            if(!listItem.getImage().equals("null")){
                 Thread thread = new Thread() {
                     @Override
                     public void run(){
@@ -260,30 +298,29 @@ public class ListActivity extends AppCompatActivity {
             if(listItem.getWish()) wish.setChecked(true);
             // 찜하기 기능
             wish.setOnClickListener(v -> {
-                String Wish = "";
-                if(wish.isChecked()) Wish = "true";
-                else Wish = "false";
                 String Rid = String.valueOf(listItem.getId());
-                /*PostWish postWish = new PostWish(ListActivity.this);
-                postWish.execute(ADDRESS_WISH, Rid, Wish, token);*/
-                Toast.makeText(ListActivity.this, Wish, Toast.LENGTH_SHORT).show();
+                PostWish postWish = new PostWish(ListActivity.this);
+                postWish.execute(ADDRESS_WISH, Rid, token);
             });
 
             return view;
         }
 
-        void addRItem(int id, String name, String address, String business_hours, String phone_number, String category_name, String image, String rating, String distance, boolean wish){
+        void addRItem(int id, String name, String address, String image, String rating, int distance, boolean wish, String category, String phone, String business, String count, String latitude, String longitude){
             ListItem item = new ListItem();
             item.setId(id);
             item.setName(name);
             item.setAddress(address);
-            item.setBusiness_hours(business_hours);
-            item.setPhone_number(phone_number);
-            item.setCategory_name(category_name);
             item.setImage(image);
             item.setRating(rating);
             item.setDistance(distance);
             item.setWish(wish);
+            item.setCategory_name(category);
+            item.setPhone_number(phone);
+            item.setBusiness_hours(business);
+            item.setCount(count);
+            item.setLatitude(latitude);
+            item.setLongitude(longitude);
 
             listItems.add(item);
         }

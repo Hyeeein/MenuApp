@@ -10,43 +10,59 @@
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.MenuApp_Test"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCU0AKCJk-bPZueqVHWtT4xuEbVKeRj8DI">
+        </meta-data>
         <activity
-            android:name=".MainActivity"
+            android:name=".GateActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".GateActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".JoinActivity" />
         <activity android:name=".NutritionActivity" />
-        <activity android:name=".RestaurantActivity" />
         <activity android:name=".WishlistActivity" />
         <activity android:name=".ReviewUserActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MypageActivity" />
-        <activity android:name=".SurveyActivity" />
+        <activity android:name=".ReviewWriteActivity" />
         <activity android:name=".RecommendActivity" />
-        <activity android:name=".RecommendResActivity" />
         <activity android:name=".JoinAllergieActivity" />
         <activity android:name=".ReviewShowActivity" />
         <activity android:name=".AllergieUpdateActivity" />
-        <activity android:name=".MenulistActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".ReviewWriteActivity" />
         <activity android:name=".ListActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".SurveyActivity" />
+        <activity android:name=".RecommendResActivity" />
         <activity android:name=".PreferenceUpdateActivity" />
-        <activity android:name=".PopupPW" android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".RestaurantActivity" />
+        <activity android:name=".Map" />
+        <activity
+            android:name=".PopupPW"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".PopupReview"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".PopupMain"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".PopupMap"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
+
 </manifest>

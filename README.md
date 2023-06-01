@@ -1,4 +1,4 @@
-# MenuApp
+# Capston Design
 
 사용자 기반 메뉴 추천 시스템
 

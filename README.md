@@ -1,4 +1,4 @@
-# Lunch Menu Recommendation System
+# Lunch Menu Recommendation
 
 ### 🥉 인천대학교 컴퓨터공학부 캡스톤디자인 졸업작품 발표회 장려상 수상
 - 주제: 학교에서 뭐 먹지? (사용자 기반 메뉴 추천 앱)

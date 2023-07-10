@@ -1,0 +1,16 @@
+db_setting.py
+
+staticfiles/
+
+media/
+images/
+
+jmc/migrations/
+
+__pycache__/
+
+!jmc/migrations/
+jmc/migrations/*
+!jmc/migrations/__init__.py
+
+thesis/

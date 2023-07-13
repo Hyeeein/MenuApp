@@ -102,8 +102,31 @@
 - (5)의 알고리즘을 적용한 후, 메뉴 유사도는 약 50%로 출력
 
 ## 5. 주요 기능 소개 및 구현 과정
+* 주요 기능 : 메뉴 추천, 주변 음식점, 마이페이지 부수적인 기능
+* 여기서는 메뉴 추천과 관련된 기능 위주로 설명합니다
 
-- [포트폴리오 19~29페이지 참고](https://github.com/Hyeeein/MenuApp/blob/master/documents/%5B%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%5D%20%ED%95%99%EA%B5%90%EC%97%90%EC%84%9C%20%EB%AD%90%20%EB%A8%B9%EC%A7%80%20(%EC%A0%90%EB%A9%94%EC%B6%94).pdf)
+### (1) 메뉴 추천을 위한 사전 정보 입력
+- 회원 가입 시 알레르기 및 음식 취향 정보 입력
+
+![image](https://github.com/Hyeeein/MenuApp/assets/81239567/2f691dc9-c14a-4d58-b95d-b9a8ad156f6b)
+
+### (2) 메인 화면
+- 화면에 닉네임, GPS 정보를 통한 현재 위치 표시
+- 메뉴 추천, 주변 음식점, 마이페이지 기능을 활용할 수 있는 버튼 활성화 → 메뉴 추천 버튼 클릭
+
+![image](https://github.com/Hyeeein/MenuApp/assets/81239567/36d8cd7b-8c0e-42e4-9aaa-3449cffb804b)
+
+### (3) 메뉴 추천 과정
+- 사용자의 예산, 날씨, 기분을 입력하여 사용자와 관련된 추가 데이터 확보 후 메뉴 추천 알고리즘 적용
+  
+![image](https://github.com/Hyeeein/MenuApp/assets/81239567/121e77cc-8f60-428d-b782-8a4096988445)
+
+- 메뉴 추천 결과에서 '이거 먹기'를 클릭할 경우 확정 팝업 표시 / 그렇지 않을 경우, 재추천 가능
+
+![image](https://github.com/Hyeeein/MenuApp/assets/81239567/0d71cfcc-9da9-4f19-b896-40e11f837d31)
+
+*더 자세한 기능들은 아래의 포트폴리오와 시연 영상 참고 부탁드립니다*
+* [포트폴리오 19~29페이지 참고](https://github.com/Hyeeein/MenuApp/blob/master/documents/%5B%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4%5D%20%ED%95%99%EA%B5%90%EC%97%90%EC%84%9C%20%EB%AD%90%20%EB%A8%B9%EC%A7%80%20(%EC%A0%90%EB%A9%94%EC%B6%94).pdf)
   - 크게 첫화면/회원가입/로그인, 메뉴 추천, 주변 음식점 출력, 마이페이지 기능으로 세분화
 - [**작품 시연 영상**](https://github.com/Hyeeein/MenuApp/blob/master/documents/%EC%9E%91%ED%92%88%20%EC%8B%9C%EC%97%B0%20%EC%98%81%EC%83%81%20final.mp4)
   - 회원가입을 시작으로 메뉴 추천을 받고, 앱을 사용하는 일련의 모습을 담음
